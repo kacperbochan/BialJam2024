@@ -7,7 +7,10 @@ public class PlayerInput : MonoBehaviour
     // singleton
     public static PlayerInput Instance { get; private set; }
 
-    public event EventHandler OnJumpAction;
+    public event EventHandler OnPlayer1Jump;
+    public event EventHandler OnPlayer2Jump;
+    public event EventHandler OnPlayer2Create;
+    public event EventHandler OnPlayer2GravityFlip;
     private PlayerInputActions playerInputActions;
 
     private void Awake()
@@ -15,18 +18,53 @@ public class PlayerInput : MonoBehaviour
         Instance = this;
 
         playerInputActions = new();
-        playerInputActions.Player.Enable();
-        playerInputActions.Player.Jump.performed += Jump_performed;
+
+        playerInputActions.Player1.Enable();
+        playerInputActions.Player1.Jump.performed += Player1Jump;
+
+        playerInputActions.Player2.Enable();
+        playerInputActions.Player2.Jump.performed += Player2Jump;
+        playerInputActions.Player2.Create.performed += Player2Create;
+        playerInputActions.Player2.GravityFlip.performed += Player2GravityFlip;
     }
 
     private void OnDestroy()
     {
-        playerInputActions.Player.Disable();
-        playerInputActions.Player.Jump.performed -= Jump_performed;
+        playerInputActions.Player1.Disable();
+        playerInputActions.Player1.Jump.performed += Player1Jump;
+
+        playerInputActions.Player2.Disable();
+        playerInputActions.Player2.Jump.performed -= Player2Jump;
+        playerInputActions.Player2.Create.performed -= Player2Create;
+        playerInputActions.Player2.GravityFlip.performed -= Player2GravityFlip;
     }
 
-    private void Jump_performed(InputAction.CallbackContext obj)
+    private void Player1Jump(InputAction.CallbackContext obj)
     {
-        OnJumpAction?.Invoke(this, EventArgs.Empty);
+        OnPlayer1Jump?.Invoke(this, EventArgs.Empty);
+    }
+    private void Player2Jump(InputAction.CallbackContext obj)
+    {
+        OnPlayer2Jump?.Invoke(this, EventArgs.Empty);
+    }
+    private void Player2Create(InputAction.CallbackContext obj)
+    {
+        OnPlayer2Create?.Invoke(this, EventArgs.Empty);
+    }
+    private void Player2GravityFlip(InputAction.CallbackContext obj)
+    {
+        OnPlayer2GravityFlip?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetPlayer1MovementValue()
+    {
+        float movementVector = playerInputActions.Player1.Move.ReadValue<float>();
+        return movementVector;
+    }
+
+    public float GetPlayer2MovementValue()
+    {
+        float movementVector = playerInputActions.Player2.Move.ReadValue<float>();
+        return movementVector;
     }
 }
