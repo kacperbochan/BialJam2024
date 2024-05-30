@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class NextLevelTrigger : MonoBehaviour
 {
-    [SerializeField] private Transform wallToDisable;
     private HashSet<Collider2D> colliders;
     private const int TOTAL_PLAYERS = 2;
 
@@ -12,7 +11,7 @@ public class NextLevelTrigger : MonoBehaviour
         colliders.Add(collision);
         if (colliders.Count > TOTAL_PLAYERS)
         {
-
+            NextLevel();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -21,6 +20,6 @@ public class NextLevelTrigger : MonoBehaviour
     }
     private void NextLevel()
     {
-
+        Debug.Log("next level");
     }
 }
