@@ -20,6 +20,7 @@ public class NextLevelTrigger : MonoBehaviour
     }
     private void NextLevel()
     {
-        Debug.Log("next level");
+        CameraManager.Instance.NextStage();
+        gameObject.SetActive(false);
     }
 }
