@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class NextLevelTrigger : MonoBehaviour
 {
-    private HashSet<Collider2D> colliders;
+    private readonly HashSet<Collider2D> colliders = new();
     private const int TOTAL_PLAYERS = 2;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         colliders.Add(collision);
-        if (colliders.Count > TOTAL_PLAYERS)
+        if (colliders.Count == TOTAL_PLAYERS)
         {
             NextLevel();
         }
