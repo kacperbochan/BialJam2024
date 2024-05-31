@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,6 +30,7 @@ public class Player1 : MonoBehaviour
     private float lastGroundedTime;
     private bool canBurn = false;
     private readonly List<Removable> touching = new();
+    public event EventHandler OnPlayer1Jump;
 
     private void Awake()
     {
@@ -76,6 +78,7 @@ public class Player1 : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower * Mathf.Sign(GetComponent<Rigidbody2D>().gravityScale), velocity.z);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
+                OnPlayer1Jump?.Invoke(this, EventArgs.Empty);
             }
             else if (Time.time - jumpRequestTime > rebounceTime)
             {
@@ -129,16 +132,19 @@ public class Player1 : MonoBehaviour
 
     private void FireLow()
     {
+        //Debug.Log("player 1 low speed");
         spriteRenderer.color = lowSpeedColor;
         canBurn = false;
     }
     private void FireMedium()
     {
+        //Debug.Log("player 1 medium speed");
         spriteRenderer.color = mediumSpeedColor;
         canBurn = false;
     }
     private void FireHigh()
     {
+        //Debug.Log("player 1 high speed");
         spriteRenderer.color = highSpeedColor;
         canBurn = true;
         while (touching.Count > 0)
