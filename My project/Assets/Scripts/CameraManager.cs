@@ -6,9 +6,9 @@ public class CameraManager : MonoBehaviour
 {
     public static CameraManager Instance { get; private set; }
 
-    private static Camera backgroundCamera1;
-    private static Camera backgroundCamera2;
-    private static Camera backgroundCamera3;
+    public static Camera backgroundCamera1;
+    public static Camera backgroundCamera2;
+    public static Camera backgroundCamera3;
     [SerializeField] private float cameraMoveTime = 2f;
     private const float NEGLIGIBLE_DIFFERENCE = .01f;
 
@@ -148,6 +148,8 @@ public class CameraManager : MonoBehaviour
                 Mathf.SmoothDamp(Camera.main.transform.position.y, mainCameraTargetY, ref mainCameraYMoveSpeed, cameraMoveTime),
                 Camera.main.transform.position.z);
             Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, mainCameraTargetS, ref mainCameraSMoveSpeed, cameraMoveTime);
+
+
 
             if ((Mathf.Abs(backgroundCamera1.transform.position.x - backgroundCamera1TargetX) < NEGLIGIBLE_DIFFERENCE))
             {
