@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{7296777d-d29c-45dd-b556-c0d310d7297e}">
+		<property name="assetPath">
+			<value>Cavern.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>72</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94aae1d6-301f-47fd-a706-1afb5150be52}</destination>
+		</relationship>
+	</object>
+</objects>

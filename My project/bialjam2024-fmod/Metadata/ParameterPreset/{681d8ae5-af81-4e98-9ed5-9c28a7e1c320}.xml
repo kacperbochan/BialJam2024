@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{681d8ae5-af81-4e98-9ed5-9c28a7e1c320}">
+		<property name="name">
+			<value>gravity</value>
+		</property>
+		<relationship name="folder">
+			<destination>{2946ee67-eb5e-4550-9475-45ccac136e42}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{eca52d0e-d7f5-4753-95c2-9d614406020f}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{eca52d0e-d7f5-4753-95c2-9d614406020f}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>2</value>
+		</property>
+	</object>
+</objects>
