@@ -27,6 +27,10 @@ public class Player2 : MonoBehaviour
     {
         Instance = this;
     }
+    private void OnValidate()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
