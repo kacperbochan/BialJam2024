@@ -5,6 +5,7 @@ public class Removable : MonoBehaviour
 {
     public bool built;
     public static event EventHandler OnAnyBurn;
+    [SerializeField] private GameObject burnParticle;
 
     private void Awake()
     {
@@ -16,6 +17,9 @@ public class Removable : MonoBehaviour
         built = false;
         gameObject.SetActive(built);
         OnAnyBurn?.Invoke(this, EventArgs.Empty);
+
+        burnParticle.SetActive(true);
+        GameObject burnParticleInst = Instantiate(burnParticle, transform.position, transform.rotation);
 
         Cascade cascadeParent = gameObject.GetComponentInParent<Cascade>();
         if (cascadeParent != null)
@@ -31,12 +35,8 @@ public class Removable : MonoBehaviour
     {
         built = true;
         gameObject.SetActive(built);
-    }
 
-    public void Destroy()
-    {
-        if (!built) return;
-        this.Burn();
-        Cascade.Destroy(gameObject);
+        BurnParticle burnParticle = GetComponent<BurnParticle>();
+        burnParticle.gameObject.SetActive(false);
     }
 }
