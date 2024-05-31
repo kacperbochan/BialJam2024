@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
+    public static CameraManager Instance { get; private set; }
+
     private static Camera backgroundCamera1;
     private static Camera backgroundCamera2;
     private static Camera backgroundCamera3;
@@ -16,12 +18,22 @@ public class CameraManager : MonoBehaviour
     private const float BACKGROUND_CAMERA_2_MOVE = BACKGROUND_CAMERA_FULL_MOVE * 5f / 7f;
     private const float BACKGROUND_CAMERA_3_MOVE = BACKGROUND_CAMERA_FULL_MOVE;
 
+    private static readonly float[] mainCameraX = new float[] {  0.0f, 22.9f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraY = new float[] {  0.0f,  4.8f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraS = new float[] {  5.0f,  9.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+
     private static float backgroundCamera1TargetX, backgroundCamera1MoveSpeed;
     private static float backgroundCamera2TargetX, backgroundCamera2MoveSpeed;
     private static float backgroundCamera3TargetX, backgroundCamera3MoveSpeed;
+    private static float mainCameraTargetX, mainCameraXMoveSpeed;
+    private static float mainCameraTargetY, mainCameraYMoveSpeed;
+    private static float mainCameraTargetS, mainCameraSMoveSpeed;
+
+    private int currentStage = 1;
 
     private void Awake()
     {
+        Instance = this;
         backgroundCamera1 = FindObjectOfType<BackgroundCamera1>().GetComponent<Camera>();
         backgroundCamera2 = FindObjectOfType<BackgroundCamera2>().GetComponent<Camera>();
         backgroundCamera3 = FindObjectOfType<BackgroundCamera3>().GetComponent<Camera>();
@@ -39,6 +51,9 @@ public class CameraManager : MonoBehaviour
         backgroundCamera1TargetX = INITIAL_BACKGROUND_CAMERA_POSITION + (number - 1) * BACKGROUND_CAMERA_1_MOVE;
         backgroundCamera2TargetX = INITIAL_BACKGROUND_CAMERA_POSITION + (number - 1) * BACKGROUND_CAMERA_2_MOVE;
         backgroundCamera3TargetX = INITIAL_BACKGROUND_CAMERA_POSITION + (number - 1) * BACKGROUND_CAMERA_3_MOVE;
+        mainCameraTargetX = mainCameraX[number-1];
+        mainCameraTargetY = mainCameraY[number-1];
+        mainCameraTargetS = mainCameraS[number-1];
     }
 
     [MenuItem("Camera Manager/Go to stage 1")]
@@ -90,8 +105,14 @@ public class CameraManager : MonoBehaviour
         TeleportCameras();
     }
 
-    public void GoToStage(int stage)
+    public void NextStage()
     {
+        GoToStage(++currentStage);
+    }
+
+    private void GoToStage(int stage)
+    {
+        Debug.Log("going to stage " + stage);
         SetCameraTargetsToStage(stage);
         StartCoroutine(MoveCameras());
     }
@@ -110,9 +131,13 @@ public class CameraManager : MonoBehaviour
                 Mathf.SmoothDamp(backgroundCamera3.transform.position.x, backgroundCamera3TargetX, ref backgroundCamera3MoveSpeed, cameraMoveTime),
                 backgroundCamera3.transform.position.y, backgroundCamera3.transform.position.z);
 
-            if ((Mathf.Abs(backgroundCamera1.transform.position.x - backgroundCamera1TargetX) < NEGLIGIBLE_DIFFERENCE) &&
-                (Mathf.Abs(backgroundCamera2.transform.position.x - backgroundCamera2TargetX) < NEGLIGIBLE_DIFFERENCE) &&
-                (Mathf.Abs(backgroundCamera3.transform.position.x - backgroundCamera3TargetX) < NEGLIGIBLE_DIFFERENCE))
+            Camera.main.transform.position = new Vector3(
+                Mathf.SmoothDamp(Camera.main.transform.position.x, mainCameraTargetX, ref mainCameraXMoveSpeed, cameraMoveTime),
+                Mathf.SmoothDamp(Camera.main.transform.position.y, mainCameraTargetY, ref mainCameraYMoveSpeed, cameraMoveTime),
+                Camera.main.transform.position.z);
+            Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, mainCameraTargetS, ref mainCameraSMoveSpeed, cameraMoveTime);
+
+            if ((Mathf.Abs(backgroundCamera1.transform.position.x - backgroundCamera1TargetX) < NEGLIGIBLE_DIFFERENCE))
             {
                 break;
             }
@@ -126,5 +151,7 @@ public class CameraManager : MonoBehaviour
         backgroundCamera1.transform.position = new Vector3(backgroundCamera1TargetX, backgroundCamera1.transform.position.y, backgroundCamera1.transform.position.z);
         backgroundCamera2.transform.position = new Vector3(backgroundCamera2TargetX, backgroundCamera2.transform.position.y, backgroundCamera2.transform.position.z);
         backgroundCamera3.transform.position = new Vector3(backgroundCamera3TargetX, backgroundCamera3.transform.position.y, backgroundCamera3.transform.position.z);
+        Camera.main.transform.position = new Vector3(mainCameraTargetX, mainCameraTargetY, Camera.main.transform.position.z);
+        Camera.main.orthographicSize = mainCameraTargetS;
     }
 }
