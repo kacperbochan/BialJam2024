@@ -36,6 +36,7 @@ public class Removable : MonoBehaviour
         built = true;
         gameObject.SetActive(built);
 
-        burnParticle.SetActive(true);
+        burnParticle.SetActive(false);
     }
+
 }
