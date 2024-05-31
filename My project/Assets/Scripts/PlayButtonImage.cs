@@ -6,6 +6,7 @@ public class PlayButtonImage : MonoBehaviour
     private const string LEVEL_SCENE_NAME = "LevelScene";
     public void StartGame()
     {
+        MusicManager.Instance.GoToStart();
         SceneManager.LoadScene(LEVEL_SCENE_NAME);
     }
 }
