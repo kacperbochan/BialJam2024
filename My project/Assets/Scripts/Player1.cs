@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Player1 : MonoBehaviour
 {
+    public static Player1 Instance { get; private set; }
+
     [SerializeField] private float jumpPower = 1f;
     [SerializeField] private float horizontalForceScale = 1f;
     [SerializeField] private float fastTurnTime = 0.1f;
@@ -24,6 +26,12 @@ public class Player1 : MonoBehaviour
     private float jumpRequestTime;
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
+    private bool canBurn = false;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -103,13 +111,21 @@ public class Player1 : MonoBehaviour
     private void FireLow()
     {
         spriteRenderer.color = lowSpeedColor;
+        canBurn = false;
     }
     private void FireMedium()
     {
         spriteRenderer.color = mediumSpeedColor;
+        canBurn = false;
     }
     private void FireHigh()
     {
         spriteRenderer.color = highSpeedColor;
+        canBurn = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //if (canBurn && collision.gameObject.GetComponent)
     }
 }
