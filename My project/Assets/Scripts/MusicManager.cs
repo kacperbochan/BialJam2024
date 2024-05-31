@@ -29,11 +29,17 @@ public class MusicManager : MonoBehaviour
         musicInstance.start();
 
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        OnSceneLoaded();
     }
 
 
     private const string LEVEL_SCENE_NAME = "LevelScene";
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
+    {
+        OnSceneLoaded();
+    }
+
+    private void OnSceneLoaded()
     {
         if (SceneManager.GetActiveScene().name == LEVEL_SCENE_NAME)
         {
