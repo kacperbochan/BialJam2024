@@ -149,7 +149,7 @@ public class CameraManager : MonoBehaviour
                 Camera.main.transform.position.z);
             Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, mainCameraTargetS, ref mainCameraSMoveSpeed, cameraMoveTime);
 
-
+            Letterbox.Instance.UpdateLetterbox();
 
             if ((Mathf.Abs(backgroundCamera1.transform.position.x - backgroundCamera1TargetX) < NEGLIGIBLE_DIFFERENCE))
             {
@@ -167,5 +167,6 @@ public class CameraManager : MonoBehaviour
         backgroundCamera3.transform.position = new Vector3(backgroundCamera3TargetX, backgroundCamera3.transform.position.y, backgroundCamera3.transform.position.z);
         Camera.main.transform.position = new Vector3(mainCameraTargetX, mainCameraTargetY, Camera.main.transform.position.z);
         Camera.main.orthographicSize = mainCameraTargetS;
+        Letterbox.Instance.UpdateLetterbox();
     }
 }

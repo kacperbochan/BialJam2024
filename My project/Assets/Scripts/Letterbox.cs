@@ -1,17 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Letterbox : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static Letterbox Instance { get; private set; }
+    private void Awake()
     {
-        
+        Instance = this;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnValidate()
+    {
+        Instance = this;
+    }
+    public void UpdateLetterbox()
     {
         Vector2 desired_screen_size = new Vector2();
         Vector2 current_screen_size = getScreenSize();
@@ -36,7 +36,7 @@ public class Letterbox : MonoBehaviour
             if (obj.name == "LetterboxDown") obj.transform.position = new Vector3(Letterbox_down_pos.x, Letterbox_down_pos.y - 15, -29);
         }
     }
-    public static Vector2 getScreenSize()
+    private Vector2 getScreenSize()
     {
         return new Vector2(Screen.width, Screen.height);
     }
