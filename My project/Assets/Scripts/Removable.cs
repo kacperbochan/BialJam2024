@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Removable : MonoBehaviour
 {
     public bool built;
+    public static event EventHandler OnAnyBurn;
 
     private void Awake()
     {
@@ -13,6 +15,7 @@ public class Removable : MonoBehaviour
     {
         built = false;
         gameObject.SetActive(built);
+        OnAnyBurn?.Invoke(this, EventArgs.Empty);
 
         Cascade cascadeParent = gameObject.GetComponentInParent<Cascade>();
         if (cascadeParent != null)

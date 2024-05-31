@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
@@ -22,6 +23,7 @@ public class Player2 : MonoBehaviour
     private float lastGroundedTime;
     private BuildTrigger buildTrigger = null;
     private GravityFlipTrigger gravityFlipTrigger = null;
+    public event EventHandler OnBuild;
 
     private void Awake()
     {
@@ -47,6 +49,7 @@ public class Player2 : MonoBehaviour
             if (!removable.built)
             {
                 removable.Build();
+                OnBuild?.Invoke(this, EventArgs.Empty);
                 Debug.Log("player 2 built a platform");
             }
         }
@@ -60,6 +63,14 @@ public class Player2 : MonoBehaviour
             foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 rigidbody2D.gravityScale *= -1;
+                if (rigidbody2D.gravityScale < 0f)
+                {
+                    MusicManager.Instance.GravityFlipOn();
+                }
+                else
+                {
+                    MusicManager.Instance.GravityFlipOff();
+                }
             }
         }
         Debug.Log("player 2 gravity flip");

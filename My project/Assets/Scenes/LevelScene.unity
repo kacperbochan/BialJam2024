@@ -10452,41 +10452,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c007d5d00c2ffaf44ad5313c9942358c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1JumpEvent:
-    Guid:
-      Data1: 18633363
-      Data2: 1229862944
-      Data3: -522234959
-      Data4: -1432554554
-    Path: event:/Jump
-  player1BurnEvent:
+  burnEvent:
     Guid:
       Data1: 1076373370
       Data2: 1301384830
       Data3: -1306526059
       Data4: -340626261
     Path: event:/Burn
-  player2JumpEvent:
-    Guid:
-      Data1: 18633363
-      Data2: 1229862944
-      Data3: -522234959
-      Data4: -1432554554
-    Path: event:/Jump
-  player2CreateEvent:
+  createEvent:
     Guid:
       Data1: -788189538
       Data2: 1181225446
       Data3: -603541871
       Data4: 1261102118
     Path: event:/Create
-  player2GravityFlipEvent:
+  transitionEvent:
     Guid:
-      Data1: -294022635
-      Data2: 1309686300
-      Data3: -1294858614
-      Data4: 203010137
-    Path: event:/GravityFlip
+      Data1: 756573625
+      Data2: 1164596710
+      Data3: 1958398609
+      Data4: -2134747186
+    Path: event:/Transition
 --- !u!4 &1713844886
 Transform:
   m_ObjectHideFlags: 0
