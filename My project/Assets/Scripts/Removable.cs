@@ -13,6 +13,15 @@ public class Removable : MonoBehaviour
     {
         built = false;
         gameObject.SetActive(built);
+
+        Cascade cascadeParent = gameObject.GetComponentInParent<Cascade>();
+        if (cascadeParent != null)
+        {
+            foreach(Removable removable in cascadeParent.GetComponentsInChildren<Removable>())
+            {
+                removable.Burn();
+            }
+        }
     }
 
     public void Build()
@@ -24,6 +33,7 @@ public class Removable : MonoBehaviour
     public void Destroy()
     {
         if (!built) return;
+        this.Burn();
         Cascade.Destroy(gameObject);
     }
 }
