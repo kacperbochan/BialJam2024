@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
 {
+    public static Player2 Instance { get; private set; }
+
     [SerializeField] private float jumpPower = 1f;
     [SerializeField] private float horizontalForceScale = 1f;
     [SerializeField] private float fastTurnTime = 0.1f;
@@ -18,6 +21,12 @@ public class Player2 : MonoBehaviour
     private float jumpRequestTime;
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
+    private BuildTrigger buildTrigger = null;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -28,7 +37,15 @@ public class Player2 : MonoBehaviour
 
     private void PlayerInput_OnPlayer2Create(object sender, System.EventArgs e)
     {
-        Debug.Log("player 2 create");
+        if (buildTrigger != null) foreach(Removable removable in buildTrigger.removables)
+        {
+            if (!removable.built)
+            {
+                removable.Build();
+                Debug.Log("player 2 built a platform");
+            }
+        }
+        Debug.Log("player 2 is done building");
     }
     
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
@@ -98,5 +115,18 @@ public class Player2 : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        buildTrigger = collision.gameObject.GetComponent<BuildTrigger>(); //can be null
+        //small bug: if triggers would be overlapping this class would be confused if it can build or not
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<BuildTrigger>() != null)
+        {
+            buildTrigger = null;
+        }
     }
 }
