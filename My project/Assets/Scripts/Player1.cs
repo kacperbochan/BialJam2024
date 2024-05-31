@@ -16,7 +16,7 @@ public class Player1 : MonoBehaviour
     [SerializeField] private Color mediumSpeedColor = new(1f, 1f, .5f);
     [SerializeField] private Color highSpeedColor = new(1f, .8f, 0f);
     [SerializeField] private float rebounceTime = .2f;
-    [SerializeField] private float coyoteTime = .2f;
+    [SerializeField] private float coyoteTime = .05f;
     private bool fastTurning = false;
     private float momentumBuilt = 0f;
     private float turningVelocity;

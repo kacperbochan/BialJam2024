@@ -20,4 +20,10 @@ public class Removable : MonoBehaviour
         built = true;
         gameObject.SetActive(built);
     }
+
+    public void Destroy()
+    {
+        if (!built) return;
+        Cascade.Destroy(gameObject);
+    }
 }
