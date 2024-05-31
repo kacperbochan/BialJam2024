@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ReverseJump",
+                    "type": "Button",
+                    "id": "9f95c64e-63dd-4b10-b2b4-546881010595",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -68,6 +77,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "31fb607e-2cbf-4aa6-b9b9-f146ad119cee",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReverseJump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -79,6 +99,15 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "bae2d204-d844-4568-be6f-234a0cc9bc64",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ReverseJump",
+                    "type": "Button",
+                    "id": "89de7e3c-b0a9-4250-8f59-d87ce87a8244",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -160,7 +189,7 @@
                 {
                     "name": "",
                     "id": "687ea4dc-e6ce-491c-a600-30327aa2dd05",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -176,6 +205,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "GravityFlip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8460126-2157-44cf-9323-0f4223ee1521",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReverseJump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

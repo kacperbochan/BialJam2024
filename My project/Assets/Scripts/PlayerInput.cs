@@ -8,7 +8,9 @@ public class PlayerInput : MonoBehaviour
     public static PlayerInput Instance { get; private set; }
 
     public event EventHandler OnPlayer1Jump;
+    public event EventHandler OnPlayer1ReverseJump;
     public event EventHandler OnPlayer2Jump;
+    public event EventHandler OnPlayer2ReverseJump;
     public event EventHandler OnPlayer2Create;
     public event EventHandler OnPlayer2GravityFlip;
     private PlayerInputActions playerInputActions;
@@ -21,9 +23,11 @@ public class PlayerInput : MonoBehaviour
 
         playerInputActions.Player1.Enable();
         playerInputActions.Player1.Jump.performed += Player1Jump;
+        playerInputActions.Player1.ReverseJump.performed += Player1ReverseJump;
 
         playerInputActions.Player2.Enable();
         playerInputActions.Player2.Jump.performed += Player2Jump;
+        playerInputActions.Player2.ReverseJump.performed += Player2ReverseJump;
         playerInputActions.Player2.Create.performed += Player2Create;
         playerInputActions.Player2.GravityFlip.performed += Player2GravityFlip;
     }
@@ -32,9 +36,11 @@ public class PlayerInput : MonoBehaviour
     {
         playerInputActions.Player1.Disable();
         playerInputActions.Player1.Jump.performed += Player1Jump;
+        playerInputActions.Player1.ReverseJump.performed += Player1ReverseJump;
 
         playerInputActions.Player2.Disable();
         playerInputActions.Player2.Jump.performed -= Player2Jump;
+        playerInputActions.Player2.ReverseJump.performed -= Player2ReverseJump;
         playerInputActions.Player2.Create.performed -= Player2Create;
         playerInputActions.Player2.GravityFlip.performed -= Player2GravityFlip;
     }
@@ -43,9 +49,17 @@ public class PlayerInput : MonoBehaviour
     {
         OnPlayer1Jump?.Invoke(this, EventArgs.Empty);
     }
+    private void Player1ReverseJump(InputAction.CallbackContext obj)
+    {
+        OnPlayer1ReverseJump?.Invoke(this, EventArgs.Empty);
+    }
     private void Player2Jump(InputAction.CallbackContext obj)
     {
         OnPlayer2Jump?.Invoke(this, EventArgs.Empty);
+    }
+    private void Player2ReverseJump(InputAction.CallbackContext obj)
+    {
+        OnPlayer2ReverseJump?.Invoke(this, EventArgs.Empty);
     }
     private void Player2Create(InputAction.CallbackContext obj)
     {

@@ -18,9 +18,12 @@ public class CameraManager : MonoBehaviour
     private const float BACKGROUND_CAMERA_2_MOVE = BACKGROUND_CAMERA_FULL_MOVE * 5f / 7f;
     private const float BACKGROUND_CAMERA_3_MOVE = BACKGROUND_CAMERA_FULL_MOVE;
 
-    private static readonly float[] mainCameraX = new float[] {  0.0f, 22.9f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
-    private static readonly float[] mainCameraY = new float[] {  0.0f,  4.8f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
-    private static readonly float[] mainCameraS = new float[] {  5.0f,  9.5f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraX = new float[] {  8.0f, 36.6f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraY = new float[] {  5.0f,  3.3f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraS = new float[] { 10.0f,  8.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+
+    private static readonly float[] sceneStartingPointX = new float[] { -6f, 24f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] sceneStartingPointY = new float[] { -3f,  0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
 
     private static float backgroundCamera1TargetX, backgroundCamera1MoveSpeed;
     private static float backgroundCamera2TargetX, backgroundCamera2MoveSpeed;
@@ -28,8 +31,6 @@ public class CameraManager : MonoBehaviour
     private static float mainCameraTargetX, mainCameraXMoveSpeed;
     private static float mainCameraTargetY, mainCameraYMoveSpeed;
     private static float mainCameraTargetS, mainCameraSMoveSpeed;
-
-    private int currentStage = 1;
 
     private void Awake()
     {
@@ -61,56 +62,67 @@ public class CameraManager : MonoBehaviour
     {
         SetCameraTargetsToStage(1);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[0], sceneStartingPointY[0]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[0], sceneStartingPointY[0]);
+
     }
     [MenuItem("Camera Manager/Go to stage 2")]
     private static void GoToStage2()
     {
         SetCameraTargetsToStage(2);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[1], sceneStartingPointY[1]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[1], sceneStartingPointY[1]);
     }
     [MenuItem("Camera Manager/Go to stage 3")]
     private static void GoToStage3()
     {
         SetCameraTargetsToStage(3);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[2], sceneStartingPointY[2]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[2], sceneStartingPointY[2]);
     }
     [MenuItem("Camera Manager/Go to stage 4")]
     private static void GoToStage4()
     {
         SetCameraTargetsToStage(4);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[3], sceneStartingPointY[3]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[3], sceneStartingPointY[3]);
     }
     [MenuItem("Camera Manager/Go to stage 5")]
     private static void GoToStage5()
     {
         SetCameraTargetsToStage(5);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[4], sceneStartingPointY[4]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[4], sceneStartingPointY[4]);
     }
     [MenuItem("Camera Manager/Go to stage 6")]
     private static void GoToStage6()
     {
         SetCameraTargetsToStage(6);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[5], sceneStartingPointY[5]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[5], sceneStartingPointY[5]);
     }
     [MenuItem("Camera Manager/Go to stage 7")]
     private static void GoToStage7()
     {
         SetCameraTargetsToStage(7);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[6], sceneStartingPointY[6]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[6], sceneStartingPointY[6]);
     }
     [MenuItem("Camera Manager/Go to stage 8")]
     private static void GoToStage8()
     {
         SetCameraTargetsToStage(8);
         TeleportCameras();
+        Player1.Instance.transform.position = new Vector2(sceneStartingPointX[7], sceneStartingPointY[7]);
+        Player2.Instance.transform.position = new Vector2(sceneStartingPointX[7], sceneStartingPointY[7]);
     }
-
-    public void NextStage()
-    {
-        GoToStage(++currentStage);
-    }
-
-    private void GoToStage(int stage)
+    public void GoToStage(int stage)
     {
         Debug.Log("going to stage " + stage);
         SetCameraTargetsToStage(stage);

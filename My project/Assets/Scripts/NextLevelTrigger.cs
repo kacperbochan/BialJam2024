@@ -5,6 +5,7 @@ public class NextLevelTrigger : MonoBehaviour
 {
     private readonly HashSet<Collider2D> colliders = new();
     private const int TOTAL_PLAYERS = 2;
+    [SerializeField] private int targetLevel = 2;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -20,7 +21,7 @@ public class NextLevelTrigger : MonoBehaviour
     }
     private void NextLevel()
     {
-        CameraManager.Instance.NextStage();
+        CameraManager.Instance.GoToStage(targetLevel);
         gameObject.SetActive(false);
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
@@ -22,6 +21,7 @@ public class Player2 : MonoBehaviour
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
     private BuildTrigger buildTrigger = null;
+    private GravityFlipTrigger gravityFlipTrigger = null;
 
     private void Awake()
     {
@@ -31,6 +31,7 @@ public class Player2 : MonoBehaviour
     private void Start()
     {
         PlayerInput.Instance.OnPlayer2Jump += PlayerInput_OnPlayer2Jump;
+        PlayerInput.Instance.OnPlayer2ReverseJump += PlayerInput_OnPlayer2ReverseJump;
         PlayerInput.Instance.OnPlayer2Create += PlayerInput_OnPlayer2Create;
         PlayerInput.Instance.OnPlayer2GravityFlip += PlayerInput_OnPlayer2GravityFlip;
     }
@@ -50,13 +51,31 @@ public class Player2 : MonoBehaviour
     
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
     {
+        if (gravityFlipTrigger != null)
+        {
+            foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                rigidbody2D.gravityScale *= -1;
+            }
+        }
         Debug.Log("player 2 gravity flip");
     }
 
     private void PlayerInput_OnPlayer2Jump(object sender, System.EventArgs e)
     {
-        jumpRequest = true;
-        jumpRequestTime = Time.time;
+        if (GetComponent<Rigidbody2D>().gravityScale > 0f)
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
+    }
+    private void PlayerInput_OnPlayer2ReverseJump(object sender, System.EventArgs e)
+    {
+        if (GetComponent<Rigidbody2D>().gravityScale < 0f)
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
     }
 
     private void Update()
@@ -70,7 +89,7 @@ public class Player2 : MonoBehaviour
             {
                 // perform actual jump
                 Vector3 velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower, velocity.z);
+                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower * Mathf.Sign(GetComponent<Rigidbody2D>().gravityScale), velocity.z);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
             }
@@ -114,19 +133,30 @@ public class Player2 : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        if (GetComponent<Rigidbody2D>().gravityScale > 0f) return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        else return Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        buildTrigger = collision.gameObject.GetComponent<BuildTrigger>(); //can be null
-        //small bug: if triggers would be overlapping this class would be confused if it can build or not
+        if (collision.gameObject.GetComponent<BuildTrigger>() != null)
+        {
+            buildTrigger = collision.gameObject.GetComponent<BuildTrigger>();
+        }
+        if (collision.gameObject.GetComponent<GravityFlipTrigger>() != null)
+        {
+            gravityFlipTrigger = collision.gameObject.GetComponent<GravityFlipTrigger>();
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<BuildTrigger>() != null)
         {
             buildTrigger = null;
+        }
+        if (collision.gameObject.GetComponent<GravityFlipTrigger>() != null)
+        {
+            gravityFlipTrigger = null;
         }
     }
 }

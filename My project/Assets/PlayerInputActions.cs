@@ -44,6 +44,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReverseJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f95c64e-63dd-4b10-b2b4-546881010595"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +99,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31fb607e-2cbf-4aa6-b9b9-f146ad119cee"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReverseJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -101,6 +121,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""bae2d204-d844-4568-be6f-234a0cc9bc64"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ReverseJump"",
+                    ""type"": ""Button"",
+                    ""id"": ""89de7e3c-b0a9-4250-8f59-d87ce87a8244"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -182,7 +211,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""687ea4dc-e6ce-491c-a600-30327aa2dd05"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -200,6 +229,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""GravityFlip"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8460126-2157-44cf-9323-0f4223ee1521"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ReverseJump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -210,9 +250,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player1 = asset.FindActionMap("Player1", throwIfNotFound: true);
         m_Player1_Jump = m_Player1.FindAction("Jump", throwIfNotFound: true);
         m_Player1_Move = m_Player1.FindAction("Move", throwIfNotFound: true);
+        m_Player1_ReverseJump = m_Player1.FindAction("ReverseJump", throwIfNotFound: true);
         // Player2
         m_Player2 = asset.FindActionMap("Player2", throwIfNotFound: true);
         m_Player2_Jump = m_Player2.FindAction("Jump", throwIfNotFound: true);
+        m_Player2_ReverseJump = m_Player2.FindAction("ReverseJump", throwIfNotFound: true);
         m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
         m_Player2_Create = m_Player2.FindAction("Create", throwIfNotFound: true);
         m_Player2_GravityFlip = m_Player2.FindAction("GravityFlip", throwIfNotFound: true);
@@ -279,12 +321,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayer1Actions> m_Player1ActionsCallbackInterfaces = new List<IPlayer1Actions>();
     private readonly InputAction m_Player1_Jump;
     private readonly InputAction m_Player1_Move;
+    private readonly InputAction m_Player1_ReverseJump;
     public struct Player1Actions
     {
         private @PlayerInputActions m_Wrapper;
         public Player1Actions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Player1_Jump;
         public InputAction @Move => m_Wrapper.m_Player1_Move;
+        public InputAction @ReverseJump => m_Wrapper.m_Player1_ReverseJump;
         public InputActionMap Get() { return m_Wrapper.m_Player1; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -300,6 +344,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @ReverseJump.started += instance.OnReverseJump;
+            @ReverseJump.performed += instance.OnReverseJump;
+            @ReverseJump.canceled += instance.OnReverseJump;
         }
 
         private void UnregisterCallbacks(IPlayer1Actions instance)
@@ -310,6 +357,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @ReverseJump.started -= instance.OnReverseJump;
+            @ReverseJump.performed -= instance.OnReverseJump;
+            @ReverseJump.canceled -= instance.OnReverseJump;
         }
 
         public void RemoveCallbacks(IPlayer1Actions instance)
@@ -332,6 +382,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player2;
     private List<IPlayer2Actions> m_Player2ActionsCallbackInterfaces = new List<IPlayer2Actions>();
     private readonly InputAction m_Player2_Jump;
+    private readonly InputAction m_Player2_ReverseJump;
     private readonly InputAction m_Player2_Move;
     private readonly InputAction m_Player2_Create;
     private readonly InputAction m_Player2_GravityFlip;
@@ -340,6 +391,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         private @PlayerInputActions m_Wrapper;
         public Player2Actions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Player2_Jump;
+        public InputAction @ReverseJump => m_Wrapper.m_Player2_ReverseJump;
         public InputAction @Move => m_Wrapper.m_Player2_Move;
         public InputAction @Create => m_Wrapper.m_Player2_Create;
         public InputAction @GravityFlip => m_Wrapper.m_Player2_GravityFlip;
@@ -355,6 +407,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @ReverseJump.started += instance.OnReverseJump;
+            @ReverseJump.performed += instance.OnReverseJump;
+            @ReverseJump.canceled += instance.OnReverseJump;
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -371,6 +426,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @ReverseJump.started -= instance.OnReverseJump;
+            @ReverseJump.performed -= instance.OnReverseJump;
+            @ReverseJump.canceled -= instance.OnReverseJump;
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
@@ -401,10 +459,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnReverseJump(InputAction.CallbackContext context);
     }
     public interface IPlayer2Actions
     {
         void OnJump(InputAction.CallbackContext context);
+        void OnReverseJump(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnCreate(InputAction.CallbackContext context);
         void OnGravityFlip(InputAction.CallbackContext context);

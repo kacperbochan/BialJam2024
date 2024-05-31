@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player1 : MonoBehaviour
@@ -27,8 +28,13 @@ public class Player1 : MonoBehaviour
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
     private bool canBurn = false;
+    private readonly List<Removable> touching = new();
 
     private void Awake()
+    {
+        Instance = this;
+    }
+    private void OnValidate()
     {
         Instance = this;
     }
@@ -36,12 +42,24 @@ public class Player1 : MonoBehaviour
     private void Start()
     {
         PlayerInput.Instance.OnPlayer1Jump += PlayerInput_OnPlayer1Jump;
+        PlayerInput.Instance.OnPlayer1ReverseJump += PlayerInput_OnPlayer1ReverseJump;
     }
 
     private void PlayerInput_OnPlayer1Jump(object sender, System.EventArgs e)
     {
-        jumpRequest = true;
-        jumpRequestTime = Time.time;
+        if (GetComponent<Rigidbody2D>().gravityScale > 0f)
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
+    }
+    private void PlayerInput_OnPlayer1ReverseJump(object sender, System.EventArgs e)
+    {
+        if (GetComponent<Rigidbody2D>().gravityScale < 0f)
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
     }
 
     private void Update()
@@ -55,7 +73,7 @@ public class Player1 : MonoBehaviour
             {
                 // perform actual jump
                 Vector3 velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower, velocity.z);
+                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower * Mathf.Sign(GetComponent<Rigidbody2D>().gravityScale), velocity.z);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
             }
@@ -105,7 +123,8 @@ public class Player1 : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        if (GetComponent<Rigidbody2D>().gravityScale > 0f) return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        else return Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
     }
 
     private void FireLow()
@@ -122,10 +141,27 @@ public class Player1 : MonoBehaviour
     {
         spriteRenderer.color = highSpeedColor;
         canBurn = true;
+        while (touching.Count > 0)
+        {
+            touching[0].Burn(); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (canBurn && collision.gameObject.GetComponent)
+        Removable removable = collision.gameObject.GetComponent<Removable>();
+        if (removable != null)
+        {
+            if (canBurn) removable.Burn();
+            else touching.Add(removable);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Removable removable = collision.gameObject.GetComponent<Removable>();
+        if (removable != null && touching.Contains(removable))
+        {
+            touching.Remove(removable);
+        }
     }
 }
