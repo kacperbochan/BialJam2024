@@ -12,10 +12,10 @@ public class Player1 : MonoBehaviour
     [SerializeField] private float distanceToGround = 0.1f;
     [SerializeField] private float mediumSpeed = 6f;
     [SerializeField] private float highSpeed = 12f;
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Color lowSpeedColor = Color.white;
-    [SerializeField] private Color mediumSpeedColor = new(1f, 1f, .5f);
-    [SerializeField] private Color highSpeedColor = new(1f, .8f, 0f);
+    //[SerializeField] private SpriteRenderer spriteRenderer;
+    //[SerializeField] private Color lowSpeedColor = Color.white;
+    //[SerializeField] private Color mediumSpeedColor = new(1f, 1f, .5f);
+    //[SerializeField] private Color highSpeedColor = new(1f, .8f, 0f);
     [SerializeField] private float rebounceTime = .2f;
     [SerializeField] private float coyoteTime = .05f;
     private bool fastTurning = false;
@@ -133,19 +133,19 @@ public class Player1 : MonoBehaviour
     private void FireLow()
     {
         //Debug.Log("player 1 low speed");
-        spriteRenderer.color = lowSpeedColor;
+        //spriteRenderer.color = lowSpeedColor;
         canBurn = false;
     }
     private void FireMedium()
     {
         //Debug.Log("player 1 medium speed");
-        spriteRenderer.color = mediumSpeedColor;
+        //spriteRenderer.color = mediumSpeedColor;
         canBurn = false;
     }
     private void FireHigh()
     {
         //Debug.Log("player 1 high speed");
-        spriteRenderer.color = highSpeedColor;
+        //spriteRenderer.color = highSpeedColor;
         canBurn = true;
         while (touching.Count > 0)
         {
