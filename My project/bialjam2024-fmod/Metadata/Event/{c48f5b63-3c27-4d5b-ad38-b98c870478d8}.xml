@@ -181,7 +181,7 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{5751c8b1-3da9-4f97-9b16-15b1cdada582}">
 		<property name="start">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="length">
 			<value>0</value>
@@ -242,10 +242,10 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{5dec6c02-a469-496f-8a92-8967ff36dd95}">
 		<property name="start">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>20.000000000000007</value>
+			<value>0</value>
 		</property>
 	</object>
 	<object class="EventSound" id="{5a487360-dcb6-40a1-863b-2dccaa135a7e}">
@@ -300,10 +300,10 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{e868351d-8eea-4bf0-b29b-9316ef942db6}">
 		<property name="start">
-			<value>5.0810099337748422</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>18.918990066225163</value>
+			<value>0</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{67fa85fb-dc18-4a75-92e7-77109b488d61}">
@@ -387,10 +387,10 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{8abbb3f9-e47c-4380-ae2e-f33b437aed2e}">
 		<property name="start">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>20</value>
+			<value>0</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{50eec68a-120b-4217-b30e-43624df59378}">
@@ -439,10 +439,10 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{55867a84-6174-4483-b64e-64d42ad0a9ef}">
 		<property name="start">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>20.000000000000011</value>
+			<value>0</value>
 		</property>
 	</object>
 	<object class="EventSound" id="{a5f8285f-7c55-4b55-b116-2f5c35f1a145}">
@@ -486,7 +486,7 @@
 	</object>
 	<object class="TransitionDestinationSound" id="{9c09f855-c03b-4f12-b7f9-bc3cdb965c5d}">
 		<property name="start">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="length">
 			<value>0</value>
@@ -494,7 +494,7 @@
 	</object>
 	<object class="SingleSound" id="{48675c86-a3c5-4854-9ab8-72b871d094f9}">
 		<property name="length">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<property name="timelockedOffset">
 			<value>0.875</value>
@@ -798,7 +798,7 @@
 	<object class="MixerBusPanner" id="{4a217863-fb7f-4961-acbd-90c201139065}" />
 	<object class="TransitionTimeline" id="{d007e324-d512-43dc-b1db-a2a0ba0c1b0b}">
 		<property name="length">
-			<value>4</value>
+			<value>2</value>
 		</property>
 		<relationship name="modules">
 			<destination>{3533d588-a7c2-4057-8821-dcdafe20fe71}</destination>
