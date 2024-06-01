@@ -18,6 +18,7 @@ public class Player1 : MonoBehaviour
     //[SerializeField] private Color highSpeedColor = new(1f, .8f, 0f);
     [SerializeField] private float rebounceTime = .2f;
     [SerializeField] private float coyoteTime = .05f;
+    [SerializeField] private float burnTime = .05f;
     private bool fastTurning = false;
     private float momentumBuilt = 0f;
     private float turningVelocity;
@@ -28,7 +29,7 @@ public class Player1 : MonoBehaviour
     private float jumpRequestTime;
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
-    private bool canBurn = false;
+    private float lastBurnTime = Mathf.NegativeInfinity;
     private readonly List<Removable> touching = new();
     public event EventHandler OnPlayer1Jump;
 
@@ -135,21 +136,19 @@ public class Player1 : MonoBehaviour
         //Debug.Log("player 1 low speed");
         //spriteRenderer.color = lowSpeedColor;
         GetComponentInChildren<Player1Visual>().FireOff();
-        canBurn = false;
     }
     private void FireMedium()
     {
         //Debug.Log("player 1 medium speed");
         //spriteRenderer.color = mediumSpeedColor;
         GetComponentInChildren<Player1Visual>().FireOff();
-        canBurn = false;
     }
     private void FireHigh()
     {
         //Debug.Log("player 1 high speed");
         //spriteRenderer.color = highSpeedColor;
         GetComponentInChildren<Player1Visual>().FireOn();
-        canBurn = true;
+        lastBurnTime = Time.time;
         
         while (touching.Count > 0)
         {
@@ -169,7 +168,8 @@ public class Player1 : MonoBehaviour
         Removable removable = collision.gameObject.GetComponent<Removable>();
         if (removable != null)
         {
-            if (canBurn) removable.Burn();
+            //Debug.Log("collided with removable, time = " + Time.time + ", lastBurnTime = " + lastBurnTime + ", " + (Time.time - lastBurnTime < burnTime));
+            if (Time.time - lastBurnTime < burnTime) removable.Burn();
             else touching.Add(removable);
         }
     }

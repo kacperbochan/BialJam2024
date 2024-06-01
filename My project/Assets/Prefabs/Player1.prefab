@@ -57,6 +57,7 @@ MonoBehaviour:
   highSpeed: 10
   rebounceTime: 0.1
   coyoteTime: 0.05
+  burnTime: 0.2
 --- !u!70 &8737757859965950778
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
