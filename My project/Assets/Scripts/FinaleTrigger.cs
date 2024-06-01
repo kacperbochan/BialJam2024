@@ -21,7 +21,7 @@ public class FinaleTrigger : MonoBehaviour
     }
     private void StartFinale()
     {
-        SceneManager.LoadScene("CreditsScene");
+        SceneManager.LoadScene("FinaleScene");
         MusicManager.Instance.GoToFinale();
     }
 }
