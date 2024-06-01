@@ -18,9 +18,9 @@ public class CameraManager : MonoBehaviour
     private const float BACKGROUND_CAMERA_2_MOVE = BACKGROUND_CAMERA_FULL_MOVE * 5f / 7f;
     private const float BACKGROUND_CAMERA_3_MOVE = BACKGROUND_CAMERA_FULL_MOVE;
 
-    private static readonly float[] mainCameraX = new float[] {  8.0f, 36.6f,  62.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
-    private static readonly float[] mainCameraY = new float[] {  5.0f,  3.3f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
-    private static readonly float[] mainCameraS = new float[] { 10.0f,  8.0f,  6.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraX = new float[] {  8.0f, 36.6f,  62.0f,  88.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraY = new float[] {  5.0f,  3.3f,  1.0f,  3.0f,  0.0f,  0.0f,  0.0f,  0.0f };
+    private static readonly float[] mainCameraS = new float[] { 10.0f,  8.0f,  6.0f, 8.0f,  0.0f,  0.0f,  0.0f,  0.0f };
 
     private static readonly float[] sceneStartingPointX = new float[] { -6f, 24f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
     private static readonly float[] sceneStartingPointY = new float[] { -3f,  0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f,  0.0f };
