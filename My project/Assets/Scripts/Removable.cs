@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Removable : MonoBehaviour
@@ -9,34 +10,64 @@ public class Removable : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(built);
+        //gameObject.SetActive(built);
+        GetComponent<BoxCollider2D>().isTrigger = !built;
+        GetComponent<SpriteRenderer>().enabled = built;
     }
 
     public void Burn()
     {
-        built = false;
-        gameObject.SetActive(built);
-        OnAnyBurn?.Invoke(this, EventArgs.Empty);
-
-        burnParticle.SetActive(true);
-        GameObject burnParticleInst = Instantiate(burnParticle, transform.position, transform.rotation);
-
         Cascade cascadeParent = gameObject.GetComponentInParent<Cascade>();
         if (cascadeParent != null)
         {
             foreach(Removable removable in cascadeParent.GetComponentsInChildren<Removable>())
             {
-                removable.Burn();
+                removable.Disable();
             }
+        }
+        else
+        {
+            Disable();
+        }
+    }
+
+    private void Disable()
+    {
+        if (built)
+        {
+            built = false;
+
+            //gameObject.SetActive(built);
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            GetComponent<SpriteRenderer>().enabled = false;
+
+            OnAnyBurn?.Invoke(this, EventArgs.Empty);
+
+            burnParticle.SetActive(true);
+            GameObject burnParticleInst = Instantiate(burnParticle, transform.position, transform.rotation);
         }
     }
 
     public void Build()
     {
         built = true;
-        gameObject.SetActive(built);
+
+        //gameObject.SetActive(built);
+        GetComponent<BoxCollider2D>().isTrigger = false;
+        GetComponent<SpriteRenderer>().enabled = true;
+
+        if (colliders.Count > 0) Burn();
 
         burnParticle.SetActive(false);
     }
 
+    private readonly HashSet<Collider2D> colliders = new();
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        colliders.Add(collision);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        colliders.Remove(collision);
+    }
 }

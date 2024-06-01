@@ -173,7 +173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   built: 0
-  fire_particle_prefab: {fileID: 8970124669998502747}
   burnParticle: {fileID: 5123155077354837783}
 --- !u!1001 &1859069569527459200
 PrefabInstance:
