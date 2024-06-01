@@ -64,15 +64,15 @@ public class Player2 : MonoBehaviour
             foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 rigidbody2D.gravityScale *= -1;
-                OnGravityFlip?.Invoke(this, EventArgs.Empty);
-                if (rigidbody2D.gravityScale < 0f)
-                {
-                    MusicManager.Instance.GravityFlipOn();
-                }
-                else
-                {
-                    MusicManager.Instance.GravityFlipOff();
-                }
+            }
+            OnGravityFlip?.Invoke(this, EventArgs.Empty);
+            if (GetComponent<Rigidbody2D>().gravityScale < 0f)
+            {
+                MusicManager.Instance.GravityFlipOn();
+            }
+            else
+            {
+                MusicManager.Instance.GravityFlipOff();
             }
         }
         //Debug.Log("player 2 gravity flip");

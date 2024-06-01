@@ -11,6 +11,7 @@ public class FlipWithGravity : MonoBehaviour
 
     private void Player2_OnGravityFlip(object sender, System.EventArgs e)
     {
+        //Debug.Log("flipping object (gravity change) " + transform.localScale);
         transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
     }
 }
