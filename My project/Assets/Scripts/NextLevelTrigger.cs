@@ -25,6 +25,6 @@ public class NextLevelTrigger : MonoBehaviour
     {
         OnNextLevel?.Invoke(this, EventArgs.Empty);
         CameraManager.Instance.GoToStage(targetLevel);
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 }
