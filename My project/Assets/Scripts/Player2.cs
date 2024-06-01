@@ -24,6 +24,7 @@ public class Player2 : MonoBehaviour
     private BuildTrigger buildTrigger = null;
     private GravityFlipTrigger gravityFlipTrigger = null;
     public event EventHandler OnBuild;
+    public event EventHandler OnGravityFlip;
 
     private void Awake()
     {
@@ -63,6 +64,7 @@ public class Player2 : MonoBehaviour
             foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 rigidbody2D.gravityScale *= -1;
+                OnGravityFlip?.Invoke(this, EventArgs.Empty);
                 if (rigidbody2D.gravityScale < 0f)
                 {
                     MusicManager.Instance.GravityFlipOn();
@@ -73,7 +75,7 @@ public class Player2 : MonoBehaviour
                 }
             }
         }
-        Debug.Log("player 2 gravity flip");
+        //Debug.Log("player 2 gravity flip");
     }
 
     private void PlayerInput_OnPlayer2Jump(object sender, System.EventArgs e)
