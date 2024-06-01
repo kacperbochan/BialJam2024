@@ -162,8 +162,32 @@ public class Player2 : MonoBehaviour
 
     private bool IsGrounded()
     {
-        if (GetComponent<Rigidbody2D>().gravityScale > 0f) return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
-        else return Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        if (GetComponent<Rigidbody2D>().gravityScale > 0f)
+        {
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+            if (!raycastHit2D) return false;
+            if (raycastHit2D.collider.GetComponent<Removable>() != null)
+            {
+                return raycastHit2D.collider.GetComponent<Removable>().built;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+            if (!raycastHit2D) return false;
+            if (raycastHit2D.collider.GetComponent<Removable>() != null)
+            {
+                return raycastHit2D.collider.GetComponent<Removable>().built;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
