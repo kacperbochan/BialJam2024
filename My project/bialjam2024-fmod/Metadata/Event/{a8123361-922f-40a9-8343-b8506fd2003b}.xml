@@ -101,9 +101,6 @@
 		<property name="isAsync">
 			<value>true</value>
 		</property>
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
 		<property name="start">
 			<value>24</value>
 		</property>
@@ -122,9 +119,6 @@
 	</object>
 	<object class="SingleSound" id="{1a36cc7e-584e-419c-bbff-2363e2f6a0a4}">
 		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="isCutoff">
 			<value>true</value>
 		</property>
 		<property name="length">
@@ -156,9 +150,6 @@
 	</object>
 	<object class="SingleSound" id="{1dcc356f-0e48-46d3-8a7a-5cd703eb9347}">
 		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="isCutoff">
 			<value>true</value>
 		</property>
 		<property name="length">

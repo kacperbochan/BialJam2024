@@ -219,9 +219,6 @@
 		<property name="isAsync">
 			<value>true</value>
 		</property>
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
 		<property name="length">
 			<value>56</value>
 		</property>
@@ -249,9 +246,6 @@
 		</property>
 	</object>
 	<object class="EventSound" id="{5a487360-dcb6-40a1-863b-2dccaa135a7e}">
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
 		<property name="start">
 			<value>128</value>
 		</property>
@@ -310,9 +304,6 @@
 		<property name="isAsync">
 			<value>true</value>
 		</property>
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
 		<property name="start">
 			<value>128</value>
 		</property>
@@ -362,9 +353,6 @@
 	</object>
 	<object class="SingleSound" id="{39c9bca9-0f52-4918-99b1-c4db063951f4}">
 		<property name="isAsync">
-			<value>true</value>
-		</property>
-		<property name="isCutoff">
 			<value>true</value>
 		</property>
 		<property name="length">
@@ -446,9 +434,6 @@
 		</property>
 	</object>
 	<object class="EventSound" id="{a5f8285f-7c55-4b55-b116-2f5c35f1a145}">
-		<property name="isCutoff">
-			<value>true</value>
-		</property>
 		<property name="start">
 			<value>128</value>
 		</property>
