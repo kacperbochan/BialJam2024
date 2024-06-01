@@ -8746,8 +8746,8 @@ MonoBehaviour:
 
     play alone or bring a friend'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
+  m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -10280,8 +10280,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Anomaly: E to reverse gravity'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
+  m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11582,8 +11582,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: join at lamp to proceed
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
+  m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11718,8 +11718,8 @@ MonoBehaviour:
 
     run to burn'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
+  m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -12586,8 +12586,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Anomaly: Q at the machine to build'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
+  m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
