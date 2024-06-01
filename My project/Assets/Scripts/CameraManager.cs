@@ -62,7 +62,9 @@ public class CameraManager : MonoBehaviour
         mainCameraTargetS = mainCameraS[number-1];
     }
 
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 1")]
+#endif
     private static void GoToStage1()
     {
         SetCameraTargetsToStage(1);
@@ -70,7 +72,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[0], sceneStartingPoint1Y[0]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[0], sceneStartingPoint2Y[0]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 2")]
+#endif
     private static void GoToStage2()
     {
         SetCameraTargetsToStage(2);
@@ -78,7 +82,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[1], sceneStartingPoint1Y[1]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[1], sceneStartingPoint2Y[1]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 3")]
+#endif
     private static void GoToStage3()
     {
         SetCameraTargetsToStage(3);
@@ -86,7 +92,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[2], sceneStartingPoint1Y[2]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[2], sceneStartingPoint2Y[2]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 4")]
+#endif
     private static void GoToStage4()
     {
         SetCameraTargetsToStage(4);
@@ -94,7 +102,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[3], sceneStartingPoint1Y[3]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[3], sceneStartingPoint2Y[3]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 5")]
+#endif
     private static void GoToStage5()
     {
         SetCameraTargetsToStage(5);
@@ -102,7 +112,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[4], sceneStartingPoint1Y[4]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[4], sceneStartingPoint2Y[4]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 6")]
+#endif
     private static void GoToStage6()
     {
         SetCameraTargetsToStage(6);
@@ -110,7 +122,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[5], sceneStartingPoint1Y[5]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[5], sceneStartingPoint2Y[5]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 7")]
+#endif
     private static void GoToStage7()
     {
         SetCameraTargetsToStage(7);
@@ -118,7 +132,9 @@ public class CameraManager : MonoBehaviour
         Player1.Instance.transform.position = new Vector2(sceneStartingPoint1X[6], sceneStartingPoint1Y[6]);
         Player2.Instance.transform.position = new Vector2(sceneStartingPoint2X[6], sceneStartingPoint2Y[6]);
     }
+#if UNITY_EDITOR
     [MenuItem("Camera Manager/Go to stage 8")]
+#endif
     private static void GoToStage8()
     {
         SetCameraTargetsToStage(8);
