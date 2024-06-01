@@ -21,6 +21,16 @@ public class PlayerInput : MonoBehaviour
 
         playerInputActions = new();
 
+        EnableInput();
+    }
+
+    private void OnDestroy()
+    {
+        DisableInput();
+    }
+
+    public void EnableInput()
+    {
         playerInputActions.Player1.Enable();
         playerInputActions.Player1.Jump.performed += Player1Jump;
         playerInputActions.Player1.ReverseJump.performed += Player1ReverseJump;
@@ -32,7 +42,7 @@ public class PlayerInput : MonoBehaviour
         playerInputActions.Player2.GravityFlip.performed += Player2GravityFlip;
     }
 
-    private void OnDestroy()
+    public void DisableInput()
     {
         playerInputActions.Player1.Disable();
         playerInputActions.Player1.Jump.performed += Player1Jump;

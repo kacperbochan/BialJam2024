@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Player2 : MonoBehaviour
@@ -69,6 +70,7 @@ public class Player2 : MonoBehaviour
             }
             OnGravityFlip?.Invoke(this, EventArgs.Empty);
             gravityFlipTime = Time.time;
+            StartCoroutine(DisableInputWhileCooldown());
             if (GetComponent<Rigidbody2D>().gravityScale < 0f)
             {
                 MusicManager.Instance.GravityFlipOn();
@@ -79,6 +81,13 @@ public class Player2 : MonoBehaviour
             }
         }
         //Debug.Log("player 2 gravity flip");
+    }
+
+    private IEnumerator DisableInputWhileCooldown()
+    {
+        PlayerInput.Instance.DisableInput();
+        yield return new WaitForSeconds(gravityFlipCooldown);
+        PlayerInput.Instance.EnableInput();
     }
 
     private void PlayerInput_OnPlayer2Jump(object sender, System.EventArgs e)
