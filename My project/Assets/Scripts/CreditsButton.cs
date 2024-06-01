@@ -9,7 +9,6 @@ public class CreditsButton : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(() =>
         {
-            Debug.Log("button click");
             GoToMenu();
         });
     }
