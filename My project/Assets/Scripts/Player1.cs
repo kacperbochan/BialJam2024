@@ -150,9 +150,15 @@ public class Player1 : MonoBehaviour
         //spriteRenderer.color = highSpeedColor;
         GetComponentInChildren<Player1Visual>().FireOn();
         canBurn = true;
+        /*
         while (touching.Count > 0)
         {
             touching[0].Burn(); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+        }
+        */
+        foreach (Removable removable in touching)
+        {
+            removable.Burn();
         }
     }
 
