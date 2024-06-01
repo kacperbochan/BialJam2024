@@ -134,18 +134,21 @@ public class Player1 : MonoBehaviour
     {
         //Debug.Log("player 1 low speed");
         //spriteRenderer.color = lowSpeedColor;
+        GetComponentInChildren<Player1Visual>().FireOff();
         canBurn = false;
     }
     private void FireMedium()
     {
         //Debug.Log("player 1 medium speed");
         //spriteRenderer.color = mediumSpeedColor;
+        GetComponentInChildren<Player1Visual>().FireOff();
         canBurn = false;
     }
     private void FireHigh()
     {
         //Debug.Log("player 1 high speed");
         //spriteRenderer.color = highSpeedColor;
+        GetComponentInChildren<Player1Visual>().FireOn();
         canBurn = true;
         while (touching.Count > 0)
         {

@@ -1,4 +1,6 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Player1Visual : MonoBehaviour
 {
@@ -21,5 +23,17 @@ public class Player1Visual : MonoBehaviour
     {
         animator.SetFloat("HorizontalSpeed", Player1.Instance.GetComponent<Rigidbody2D>().velocity.x);
         animator.SetFloat("VerticalSpeed", Player1.Instance.GetComponent<Rigidbody2D>().velocity.y);
+    }
+
+    [SerializeField] private GameObject artistFire;
+
+    public void FireOn()
+    {
+        artistFire.SetActive(true);
+    }
+
+    public void FireOff()
+    {
+        artistFire.SetActive(false);
     }
 }

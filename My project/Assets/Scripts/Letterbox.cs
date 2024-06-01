@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Letterbox : MonoBehaviour
 {
+    [SerializeField] private Transform clouds;
     public static Letterbox Instance { get; private set; }
     private void Awake()
     {
@@ -35,6 +36,8 @@ public class Letterbox : MonoBehaviour
             if (obj.name == "LetterboxUp") obj.transform.position = new Vector3(Letterbox_up_pos.x, Letterbox_up_pos.y + 15, -29);
             if (obj.name == "LetterboxDown") obj.transform.position = new Vector3(Letterbox_down_pos.x, Letterbox_down_pos.y - 15, -29);
         }
+
+        clouds.position = new Vector3(Letterbox_up_pos.x-15, Letterbox_up_pos.y-15, -29);
     }
     private Vector2 getScreenSize()
     {
