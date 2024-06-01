@@ -49,12 +49,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e6700bef7bddeb47be25369befc7a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpPower: 18
-  horizontalForceScale: 35
+  jumpPower: 14
+  horizontalForceScale: 25
   fastTurnTime: 0.1
   distanceToGround: 0.9
   rebounceTime: 0.1
   coyoteTime: 0.05
+  gravityFlipCooldown: 1
 --- !u!70 &3298852169363182019
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -102,10 +103,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 1
+  m_Mass: 0.5
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
-  m_GravityScale: 10
+  m_GravityScale: 5
   m_Material: {fileID: 6200000, guid: 525d61c18c1fd8643b5209e7eb49469d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
