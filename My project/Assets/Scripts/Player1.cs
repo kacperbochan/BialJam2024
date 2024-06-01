@@ -19,6 +19,7 @@ public class Player1 : MonoBehaviour
     [SerializeField] private float rebounceTime = .2f;
     [SerializeField] private float coyoteTime = .05f;
     [SerializeField] private float burnTime = .05f;
+    [SerializeField] private float airBurnForbidTime = .5f;
     private bool fastTurning = false;
     private float momentumBuilt = 0f;
     private float turningVelocity;
@@ -30,6 +31,7 @@ public class Player1 : MonoBehaviour
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
     private float lastBurnTime = Mathf.NegativeInfinity;
+    private float lastAirTime = 0f;
     private readonly List<Removable> touching = new();
     public event EventHandler OnPlayer1Jump;
 
@@ -68,6 +70,7 @@ public class Player1 : MonoBehaviour
     private void Update()
     {
         if (IsGrounded()) lastGroundedTime = Time.time;
+        else lastAirTime = Time.time;
 
         if (jumpRequest)
         {
@@ -149,18 +152,21 @@ public class Player1 : MonoBehaviour
         //spriteRenderer.color = highSpeedColor;
         GetComponentInChildren<Player1Visual>().FireOn();
         lastBurnTime = Time.time;
-        
-        while (touching.Count > 0)
+
+        if (Time.time - lastAirTime > airBurnForbidTime)
         {
-            touching[0].Burn();
-            touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+            while (touching.Count > 0)
+            {
+                touching[0].Burn();
+                touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+            }
+            /*
+            foreach (Removable removable in touching)
+            {
+                removable.Burn();
+            }
+            */
         }
-        /*
-        foreach (Removable removable in touching)
-        {
-            removable.Burn();
-        }
-        */
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -169,7 +175,7 @@ public class Player1 : MonoBehaviour
         if (removable != null)
         {
             //Debug.Log("collided with removable, time = " + Time.time + ", lastBurnTime = " + lastBurnTime + ", " + (Time.time - lastBurnTime < burnTime));
-            if (Time.time - lastBurnTime < burnTime) removable.Burn();
+            if (Time.time - lastBurnTime < burnTime && Time.time - lastAirTime > airBurnForbidTime) removable.Burn();
             else touching.Add(removable);
         }
     }

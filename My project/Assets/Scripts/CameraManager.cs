@@ -22,11 +22,11 @@ public class CameraManager : MonoBehaviour
     private static readonly float[] mainCameraY = new float[] {  5.0f,  3.3f,  1.5f,  3.0f,  4.0f,  3.3f,  0.0f,  0.0f };
     private static readonly float[] mainCameraS = new float[] { 10.0f,  8.0f,  6.0f, 8.0f, 9.0f,  8.0f,  0.0f,  0.0f };
 
-    private static readonly float[] sceneStartingPoint1X = new float[] { -6f, 24f,  55.0f,  0.0f,  110.0f,  136.0f,  0.0f,  0.0f };
-    private static readonly float[] sceneStartingPoint1Y = new float[] { -3f,  0f,  -3.0f,  0.0f,  0.0f,  -3.0f,  0.0f,  0.0f };
+    private static readonly float[] sceneStartingPoint1X = new float[] { -6f, 24f,  55.0f, 75.0f,  110.0f,  136.0f,  0.0f,  0.0f };
+    private static readonly float[] sceneStartingPoint1Y = new float[] { -3f,  0f,  -3.0f, -3.0f,  0.0f,  -3.0f,  0.0f,  0.0f };
 
-    private static readonly float[] sceneStartingPoint2X = new float[] { 11f, 24f,  54.0f,  0.0f,  112.0f,  135.0f,  0.0f,  0.0f };
-    private static readonly float[] sceneStartingPoint2Y = new float[] {  2f,  0f,  -3.0f,  0.0f,  0.0f,  -3.0f,  0.0f,  0.0f };
+    private static readonly float[] sceneStartingPoint2X = new float[] { 11f, 24f,  54.0f, 77.0f,  112.0f,  135.0f,  0.0f,  0.0f };
+    private static readonly float[] sceneStartingPoint2Y = new float[] {  2f,  0f,  -3.0f, -3.0f,  0.0f,  -3.0f,  0.0f,  0.0f };
 
     private static float backgroundCamera1TargetX, backgroundCamera1MoveSpeed;
     private static float backgroundCamera2TargetX, backgroundCamera2MoveSpeed;
