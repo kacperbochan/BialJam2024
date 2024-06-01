@@ -25,6 +25,8 @@ public class Player2 : MonoBehaviour
     private GravityFlipTrigger gravityFlipTrigger = null;
     public event EventHandler OnBuild;
     public event EventHandler OnGravityFlip;
+    private float gravityFlipTime = Mathf.NegativeInfinity;
+    [SerializeField] private float gravityFlipCooldown = 1f;
 
     private void Awake()
     {
@@ -59,13 +61,14 @@ public class Player2 : MonoBehaviour
     
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
     {
-        if (gravityFlipTrigger != null)
+        if (gravityFlipTrigger != null && Time.time - gravityFlipTime > gravityFlipCooldown)
         {
             foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 rigidbody2D.gravityScale *= -1;
             }
             OnGravityFlip?.Invoke(this, EventArgs.Empty);
+            gravityFlipTime = Time.time;
             if (GetComponent<Rigidbody2D>().gravityScale < 0f)
             {
                 MusicManager.Instance.GravityFlipOn();
