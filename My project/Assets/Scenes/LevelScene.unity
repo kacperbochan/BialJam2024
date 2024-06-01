@@ -399,7 +399,7 @@ Transform:
   m_GameObject: {fileID: 106456175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.6, y: -200, z: -30}
+  m_LocalPosition: {x: 9.6, y: -600, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4127,7 +4127,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Esc to restart level
+  m_text: Esc = return to starting position
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -4230,7 +4230,7 @@ Transform:
   m_GameObject: {fileID: 614769991}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -200, z: 0}
+  m_LocalPosition: {x: 0, y: -600, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12391,7 +12391,7 @@ Transform:
   m_GameObject: {fileID: 730011085}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.6, y: -100, z: -30}
+  m_LocalPosition: {x: 9.6, y: -500, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23625,7 +23625,7 @@ Transform:
   m_GameObject: {fileID: 961779264}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.6, y: -300, z: -30}
+  m_LocalPosition: {x: 9.6, y: -700, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25166,7 +25166,7 @@ Transform:
   m_GameObject: {fileID: 1145202474}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -100, z: 0}
+  m_LocalPosition: {x: 0, y: -500, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -72282,7 +72282,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2.24, y: 2.6706}
+  m_AnchoredPosition: {x: 14.06, y: 3.09}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1900661719
@@ -72305,7 +72305,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Anomaly: E to reverse gravity'
+  m_text: 'Anomaly: E to reverse gravity
+
+    S/arrow down to jump from ceiling'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -72332,14 +72334,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.67
+  m_fontSizeBase: 0.67
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -72408,7 +72410,7 @@ Transform:
   m_GameObject: {fileID: 1908253277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -300, z: 0}
+  m_LocalPosition: {x: 0, y: -700, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
