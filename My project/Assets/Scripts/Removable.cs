@@ -6,12 +6,13 @@ public class Removable : MonoBehaviour
 {
     public bool built;
     public static event EventHandler OnAnyBurn;
-    [SerializeField] private GameObject burnParticle;    
+    [SerializeField] private GameObject burnParticle;
+    [SerializeField] private GameObject creationParticle;
 
     private void Awake()
     {
         //gameObject.SetActive(built);
-        gameObject.layer = (built)?LayerMask.NameToLayer("WorldPlatforms"): LayerMask.NameToLayer("IgnoreRaycast");
+        gameObject.layer = (built)?LayerMask.NameToLayer("WorldPlatforms"): LayerMask.NameToLayer("Ignore Raycast");
 
         GetComponent<BoxCollider2D>().isTrigger = !built;
         GetComponent<SpriteRenderer>().enabled = built;
@@ -38,7 +39,7 @@ public class Removable : MonoBehaviour
         if (built)
         {
             built = false;
-            gameObject.layer = LayerMask.NameToLayer("IgnoreRaycast");
+            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             //gameObject.SetActive(built);
             GetComponent<BoxCollider2D>().isTrigger = true;
             GetComponent<SpriteRenderer>().enabled = false;
@@ -64,6 +65,7 @@ public class Removable : MonoBehaviour
         if (colliders.Count > 0) Burn();
 
         burnParticle.SetActive(false);
+        creationParticle.SetActive(true);
     }
 
     private readonly HashSet<Collider2D> colliders = new();
