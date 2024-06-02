@@ -7,7 +7,6 @@ public class Removable : MonoBehaviour
     public bool built;
     public static event EventHandler OnAnyBurn;
     [SerializeField] private GameObject burnParticle;
-    [SerializeField] private GameObject creationParticle;
 
     private void Awake()
     {
@@ -65,7 +64,6 @@ public class Removable : MonoBehaviour
         if (colliders.Count > 0) Burn();
 
         burnParticle.SetActive(false);
-        creationParticle.SetActive(true);
     }
 
     private readonly HashSet<Collider2D> colliders = new();
