@@ -153,19 +153,30 @@ public class Player1 : MonoBehaviour
         GetComponentInChildren<Player1Visual>().FireOn();
         lastBurnTime = Time.time;
 
-        if (Time.time - lastAirTime > airBurnForbidTime)
+        if (IsGrounded()) 
+        { 
+            if (Time.time - lastAirTime > airBurnForbidTime)
+            {
+                while (touching.Count > 0)
+                {
+                    touching[0].Burn();
+                    touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+                }
+                /*
+                foreach (Removable removable in touching)
+                {
+                    removable.Burn();
+                }
+                */
+            }
+        }
+        else 
         {
-            while (touching.Count > 0)
+           while (touching.Count > 0)
             {
                 touching[0].Burn();
                 touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
             }
-            /*
-            foreach (Removable removable in touching)
-            {
-                removable.Burn();
-            }
-            */
         }
     }
 
@@ -175,7 +186,7 @@ public class Player1 : MonoBehaviour
         if (removable != null)
         {
             //Debug.Log("collided with removable, time = " + Time.time + ", lastBurnTime = " + lastBurnTime + ", " + (Time.time - lastBurnTime < burnTime));
-            if (Time.time - lastBurnTime < burnTime && Time.time - lastAirTime > airBurnForbidTime) removable.Burn();
+            if (Time.time - lastBurnTime < burnTime && (!IsGrounded() || Time.time - lastAirTime > airBurnForbidTime)) removable.Burn();
             else touching.Add(removable);
         }
     }
