@@ -12,6 +12,16 @@ public class CreditsButton : MonoBehaviour
             GoToMenu();
         });
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown("space") ||
+            Input.GetKeyDown("return"))
+        {
+            GoToMenu();
+        }
+    }
+
     private void GoToMenu()
     {
         SceneManager.LoadScene(MENU_SCENE_NAME);
