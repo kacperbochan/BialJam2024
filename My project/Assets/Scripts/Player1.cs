@@ -32,6 +32,7 @@ public class Player1 : MonoBehaviour
     private float lastGroundedTime;
     private float lastBurnTime = Mathf.NegativeInfinity;
     private float lastAirTime = 0f;
+    private float capsuleWidth;
     private readonly List<Removable> touching = new();
     public event EventHandler OnPlayer1Jump;
 
@@ -48,6 +49,9 @@ public class Player1 : MonoBehaviour
     {
         PlayerInput.Instance.OnPlayer1Jump += PlayerInput_OnPlayer1Jump;
         PlayerInput.Instance.OnPlayer1ReverseJump += PlayerInput_OnPlayer1ReverseJump;
+
+        CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
+        capsuleWidth = capsuleCollider.size.x;
     }
 
     private void PlayerInput_OnPlayer1Jump(object sender, System.EventArgs e)
@@ -128,10 +132,22 @@ public class Player1 : MonoBehaviour
         //Debug.Log("velocity = " + GetComponent<Rigidbody2D>().velocity.x + ", fastTurning = " + fastTurning + ", IsGrounded = " + IsGrounded());
     }
 
+
+
     private bool IsGrounded()
     {
-        if (GetComponent<Rigidbody2D>().gravityScale > 0f) return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
-        else return Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+        int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
+        Vector2 leftRayOrigin = new Vector2(transform.position.x - capsuleWidth / 2, transform.position.y);
+        Vector2 rightRayOrigin = new Vector2(transform.position.x + capsuleWidth / 2, transform.position.y);
+        Vector2 centerRayOrigin = new Vector2(transform.position.x, transform.position.y);
+
+        bool normalGravity = GetComponent<Rigidbody2D>().gravityScale > 0f;
+
+        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+
+        return leftRayHit || rightRayHit || centerRayHit;
     }
 
     private void FireLow()

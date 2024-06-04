@@ -27,6 +27,7 @@ public class Player2 : MonoBehaviour
     public event EventHandler OnBuild;
     public event EventHandler OnGravityFlip;
     private float gravityFlipTime = Mathf.NegativeInfinity;
+    private float capsuleWidth;
     [SerializeField] private float gravityFlipCooldown = 1f;
 
     private void Awake()
@@ -44,6 +45,9 @@ public class Player2 : MonoBehaviour
         PlayerInput.Instance.OnPlayer2ReverseJump += PlayerInput_OnPlayer2ReverseJump;
         PlayerInput.Instance.OnPlayer2Create += PlayerInput_OnPlayer2Create;
         PlayerInput.Instance.OnPlayer2GravityFlip += PlayerInput_OnPlayer2GravityFlip;
+
+        CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
+        capsuleWidth = capsuleCollider.size.x;
     }
 
     private void PlayerInput_OnPlayer2Create(object sender, System.EventArgs e)
@@ -162,9 +166,21 @@ public class Player2 : MonoBehaviour
 
     private bool IsGrounded()
     {
-        if (GetComponent<Rigidbody2D>().gravityScale > 0f) return Physics2D.Raycast(transform.position, Vector2.down, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
-        else return Physics2D.Raycast(transform.position, Vector2.up, distanceToGround, 1 << WORLD_PLATFORM_LAYER);
+
+        int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
+        Vector2 leftRayOrigin = new Vector2(transform.position.x - capsuleWidth / 2, transform.position.y);
+        Vector2 rightRayOrigin = new Vector2(transform.position.x + capsuleWidth / 2, transform.position.y);
+        Vector2 centerRayOrigin = new Vector2(transform.position.x, transform.position.y);
+
+        bool normalGravity = GetComponent<Rigidbody2D>().gravityScale > 0f;
+
+        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+
+        return leftRayHit || rightRayHit || centerRayHit;
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
