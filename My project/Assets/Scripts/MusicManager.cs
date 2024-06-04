@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,15 +24,33 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        musicInstance = FMODUnity.RuntimeManager.CreateInstance(musicEvent);
-        musicInstance.start();
+        if (Application.platform != RuntimePlatform.WebGLPlayer) StartMusicIfNotStartedYet();
 
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         OnSceneLoaded();
     }
 
+    private bool musicStarted = false;
+    public void StartMusicIfNotStartedYet()
+    {
+        if (!musicStarted)
+        {
+            musicStarted = true;
+            StartCoroutine(StartMusic());
+        }
+    }
+    private IEnumerator StartMusic()
+    {
+        while (!FMODUnity.RuntimeManager.HaveAllBanksLoaded)
+        {
+            yield return null;
+        }
+        musicInstance = FMODUnity.RuntimeManager.CreateInstance(musicEvent);
+        musicInstance.start();
+    }
 
     private const string LEVEL_SCENE_NAME = "LevelScene";
+    private const string MENU_SCENE_NAME = "MenuScene";
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         OnSceneLoaded();
@@ -41,11 +60,20 @@ public class MusicManager : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == LEVEL_SCENE_NAME)
         {
-            GoToStart();
+            GoToGame();
+        }
+        else if (SceneManager.GetActiveScene().name == MENU_SCENE_NAME)
+        {
+            GoToMenu();
         }
     }
 
-    public void GoToStart()
+    public void GoToMenu()
+    {
+        musicInstance.setParameterByName("state", 0);
+    }
+
+    public void GoToGame()
     {
         musicInstance.setParameterByName("state", 1);
     }

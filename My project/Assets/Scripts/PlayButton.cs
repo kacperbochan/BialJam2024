@@ -9,6 +9,7 @@ public class PlayButton : MonoBehaviour
 
         GetComponent<Button>().onClick.AddListener(() => {
             animator.SetTrigger("clicked");
+            MusicManager.Instance.StartMusicIfNotStartedYet();
         });
 
     }
