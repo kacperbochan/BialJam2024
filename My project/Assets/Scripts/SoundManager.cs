@@ -22,7 +22,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         Removable.OnAnyBurn += Removable_OnAnyBurn;
         Player2.Instance.OnBuild += Player2_OnBuild;
