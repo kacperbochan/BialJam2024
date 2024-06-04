@@ -18,10 +18,18 @@ public class PauseCanvas : MonoBehaviour
         {
             SceneManager.LoadScene("MenuScene");
         });
-        QuitButton.onClick.AddListener(() =>
+        
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
-            Debug.Log("quitting");
-            Application.Quit();
-        });
+            QuitButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            QuitButton.onClick.AddListener(() =>
+            {
+                Debug.Log("quitting");
+                Application.Quit();
+            });
+        }
     }
 }
