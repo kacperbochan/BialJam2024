@@ -1,12 +1,11 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayButton : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
     private AsyncOperation sceneLoad;
+    [SerializeField] private PlayButtonImage playButtonImage;
     private const string LEVEL_SCENE_NAME = "LevelScene";
 
     private void Start()
@@ -14,25 +13,26 @@ public class PlayButton : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(() => {
             Play();
         });
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
-        {
-            Play();
-        }
+        GetComponent<Button>().Select();
     }
 
     private void Play()
     {
-        animator.SetTrigger("clicked");
+        playButtonImage.GetComponent<Animator>().SetTrigger("clicked");
+        playButtonImage.OnDonePlayButtonAnimation += PlayButtonImage_OnDonePlayButtonAnimation;
         MusicManager.Instance.StartMusicIfNotStartedYet();
         sceneLoad = SceneManager.LoadSceneAsync(LEVEL_SCENE_NAME);
         sceneLoad.allowSceneActivation = false;
     }
+
+    private void PlayButtonImage_OnDonePlayButtonAnimation(object sender, System.EventArgs e)
+    {
+        SwitchScene();
+    }
+
     public void SwitchScene()
     {
+        MusicManager.Instance.GoToGame();
         sceneLoad.allowSceneActivation = true;
     }
 }

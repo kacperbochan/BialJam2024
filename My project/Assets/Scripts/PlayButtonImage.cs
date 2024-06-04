@@ -1,11 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PlayButtonImage : MonoBehaviour
 {
-    [SerializeField] private PlayButton playButton;
-    public void StartGame()
+    public event EventHandler OnDonePlayButtonAnimation;
+    public void DoneAnimation()
     {
-        MusicManager.Instance.GoToGame();
-        playButton.SwitchScene();
+        OnDonePlayButtonAnimation?.Invoke(this, EventArgs.Empty);
     }
 }

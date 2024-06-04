@@ -11,15 +11,7 @@ public class CreditsButton : MonoBehaviour
         {
             GoToMenu();
         });
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown("space") ||
-            Input.GetKeyDown("return"))
-        {
-            GoToMenu();
-        }
+        GetComponent<Button>().Select();
     }
 
     private void GoToMenu()
