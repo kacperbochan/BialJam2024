@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    [SerializeField] private GameObject pausedCanvas;
+    [SerializeField] private PauseCanvas pauseCanvas;
 
     private enum GameState
     {
@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
                 case GameState.Playing:
                     Time.timeScale = NORMAL_SPEED;
                     PlayerInput.Instance.EnablePlayerInput();
-                    pausedCanvas.SetActive(false);
+                    pauseCanvas.Hide();
                     break;
                 case GameState.Paused:
                     Time.timeScale = PAUSED_SPEED;
                     PlayerInput.Instance.DisablePlayerInput();
-                    pausedCanvas.SetActive(true);
+                    pauseCanvas.Show();
                     break;
             }
         }

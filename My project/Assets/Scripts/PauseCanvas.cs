@@ -32,4 +32,13 @@ public class PauseCanvas : MonoBehaviour
             });
         }
     }
+    public void Show()
+    {
+        gameObject.SetActive(true);
+        ResumeButton.Select();
+    }
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }
