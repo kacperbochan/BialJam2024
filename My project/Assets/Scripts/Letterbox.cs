@@ -46,16 +46,16 @@ public class Letterbox : MonoBehaviour
         clouds.position = new Vector3(Camera.main.transform.position.x - 10f * cloudsScale, Camera.main.transform.position.y);
         clouds.localScale = Vector3.one * cloudsScale;
 
-        leftLetterbox.transform.localScale = Vector3.one * cloudsScale * 100f;
+        leftLetterbox.transform.localScale = 100f * cloudsScale * Vector3.one;
         leftLetterbox.transform.position = new Vector3(Camera.main.transform.position.x - cloudsScale * 58.9f, Camera.main.transform.position.y);
 
-        rightLetterbox.transform.localScale = Vector3.one * cloudsScale * 100f;
+        rightLetterbox.transform.localScale = 100f * cloudsScale * Vector3.one;
         rightLetterbox.transform.position = new Vector3(Camera.main.transform.position.x + cloudsScale * 58.9f, Camera.main.transform.position.y);
 
-        topLetterbox.transform.localScale = Vector3.one * cloudsScale * 100f;
+        topLetterbox.transform.localScale = 100f * cloudsScale * Vector3.one;
         topLetterbox.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y + cloudsScale * 55f);
 
-        bottomLetterbox.transform.localScale = Vector3.one * cloudsScale * 100f;
+        bottomLetterbox.transform.localScale = 100f * cloudsScale * Vector3.one;
         bottomLetterbox.transform.position = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y - cloudsScale * 55f);
     }
 }

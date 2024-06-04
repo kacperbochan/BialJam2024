@@ -35,6 +35,31 @@ public class CameraManager : MonoBehaviour
     private static float mainCameraTargetY, mainCameraYMoveSpeed;
     private static float mainCameraTargetS, mainCameraSMoveSpeed;
 
+    private const float TARGET_RATIO = 16f / 9f;
+
+    private static float _cameraSizeSetter;
+    private static float CameraSizeSetter
+    {
+        get => _cameraSizeSetter;
+        set
+        {
+            _cameraSizeSetter = value;
+
+            float currentRatio = (float)Screen.width / (float)Screen.height; //DO NOT delete these casts! currentRatio is 0 without them
+            if (currentRatio < TARGET_RATIO)
+            {
+                //taller than 16:9, camera FOV has to shrink to fit the scene
+                Camera.main.orthographicSize = CameraSizeSetter * TARGET_RATIO / currentRatio;
+                //Debug.Log("CameraSizeSetter setting size for tall screen: " + CameraSizeSetter + ", because TARGET_RATIO = " + TARGET_RATIO + ", currentRatio = " + currentRatio + ", CameraSizeSetter = " + CameraSizeSetter);
+            }
+            else
+            {
+                Camera.main.orthographicSize = CameraSizeSetter;
+                //Debug.Log("CameraSizeSetter setting size: " + CameraSizeSetter);
+            }
+        }
+    }
+
     private int currentStage = 1;
 
     private void Awake()
@@ -54,6 +79,8 @@ public class CameraManager : MonoBehaviour
 
     private void Start()
     {
+        _cameraSizeSetter = Camera.main.orthographicSize;
+        CameraSizeSetter = CameraSizeSetter; //trigger calculations for tall screen FOV
         PlayerInput.Instance.OnRestartRequested += PlayerInput_OnRestartRequested;
     }
 
@@ -205,7 +232,7 @@ public class CameraManager : MonoBehaviour
                 Mathf.SmoothDamp(Camera.main.transform.position.x, mainCameraTargetX, ref mainCameraXMoveSpeed, cameraMoveTime),
                 Mathf.SmoothDamp(Camera.main.transform.position.y, mainCameraTargetY, ref mainCameraYMoveSpeed, cameraMoveTime),
                 Camera.main.transform.position.z);
-            Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, mainCameraTargetS, ref mainCameraSMoveSpeed, cameraMoveTime);
+            CameraSizeSetter = Mathf.SmoothDamp(CameraSizeSetter, mainCameraTargetS, ref mainCameraSMoveSpeed, cameraMoveTime);
 
             Letterbox.Instance.UpdateLetterbox();
 
@@ -224,7 +251,7 @@ public class CameraManager : MonoBehaviour
         backgroundCamera2.transform.position = new Vector3(backgroundCamera2TargetX, backgroundCamera2.transform.position.y, backgroundCamera2.transform.position.z);
         backgroundCamera3.transform.position = new Vector3(backgroundCamera3TargetX, backgroundCamera3.transform.position.y, backgroundCamera3.transform.position.z);
         Camera.main.transform.position = new Vector3(mainCameraTargetX, mainCameraTargetY, Camera.main.transform.position.z);
-        Camera.main.orthographicSize = mainCameraTargetS;
+        CameraSizeSetter = mainCameraTargetS;
         Letterbox.Instance.UpdateLetterbox();
     }
 }
