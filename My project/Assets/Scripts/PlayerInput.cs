@@ -28,7 +28,7 @@ public class PlayerInput : MonoBehaviour
         DisableInput();
     }
 
-    public void EnableInput()
+    public void EnablePlayerInput()
     {
         playerInputActions.Player1.Enable();
         playerInputActions.Player1.Jump.performed += Player1Jump;
@@ -40,22 +40,16 @@ public class PlayerInput : MonoBehaviour
         playerInputActions.Player2.Create.performed += Player2Create;
         playerInputActions.Player2.GravityFlip.performed += Player2GravityFlip;
         playerInputActions.Player2.Restart.performed += Restart_performed;
+    }
+    public void EnableInput()
+    {
+        EnablePlayerInput();
 
         playerInputActions.Others.Enable();
         playerInputActions.Others.Pause.performed += Pause_performed;
     }
 
-    private void Restart_performed(InputAction.CallbackContext obj)
-    {
-        OnRestartRequested?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void Pause_performed(InputAction.CallbackContext obj)
-    {
-        OnPauseRequested?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void DisableInput()
+    public void DisablePlayerInput()
     {
         playerInputActions.Player1.Disable();
         playerInputActions.Player1.Jump.performed += Player1Jump;
@@ -67,9 +61,24 @@ public class PlayerInput : MonoBehaviour
         playerInputActions.Player2.Create.performed -= Player2Create;
         playerInputActions.Player2.GravityFlip.performed -= Player2GravityFlip;
         playerInputActions.Player2.Restart.performed -= Restart_performed;
+    }
+
+    public void DisableInput()
+    {
+        DisablePlayerInput();
 
         playerInputActions.Others.Disable();
         playerInputActions.Others.Pause.performed -= Pause_performed;
+    }
+
+    private void Restart_performed(InputAction.CallbackContext obj)
+    {
+        OnRestartRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseRequested?.Invoke(this, EventArgs.Empty);
     }
 
     private void Player1Jump(InputAction.CallbackContext obj)

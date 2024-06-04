@@ -35,6 +35,7 @@ public class Player1 : MonoBehaviour
     private float capsuleWidth;
     private readonly List<Removable> touching = new();
     public event EventHandler OnPlayer1Jump;
+    private bool movementDisabled = false;
 
     private void Awake()
     {
@@ -71,6 +72,15 @@ public class Player1 : MonoBehaviour
         }
     }
 
+    public void DisableMovement()
+    {
+        movementDisabled = true;
+    }
+    public void EnableMovement()
+    {
+        movementDisabled = false;
+    }
+
     private void Update()
     {
         if (IsGrounded()) lastGroundedTime = Time.time;
@@ -94,47 +104,55 @@ public class Player1 : MonoBehaviour
             }
         }
 
-        float horizontalForce = horizontalForceScale * PlayerInput.Instance.GetPlayer1MovementValue();
+        if (!movementDisabled)
+        {
+            float horizontalForce = horizontalForceScale * PlayerInput.Instance.GetPlayer1MovementValue();
 
-        if (fastTurning && horizontalForce == 0f)
-        {
-            fastTurning = false;
-            //Debug.Log("no input, disabling fastTurning");
-        }
-        else if (fastTurning && Mathf.Abs(turningVelocity - momentumBuilt) < NEGLIGIBLE_DIFFERENCE)
-        {
-            fastTurning = false;
-            //Debug.Log("built back momentum, disabling fastTurning");
-        }
-        else if (!fastTurning && horizontalForce * GetComponent<Rigidbody2D>().velocity.x < 0f)
-        {
-            fastTurning = true;
-            turningVelocity = GetComponent<Rigidbody2D>().velocity.x;
-            momentumBuilt = -GetComponent<Rigidbody2D>().velocity.x;
-            //Debug.Log("movement and input inverse, enabling fastTurning");
-        }
+            if (fastTurning && horizontalForce == 0f)
+            {
+                fastTurning = false;
+                //Debug.Log("no input, disabling fastTurning");
+            }
+            else if (fastTurning && Mathf.Abs(turningVelocity - momentumBuilt) < NEGLIGIBLE_DIFFERENCE)
+            {
+                fastTurning = false;
+                //Debug.Log("built back momentum, disabling fastTurning");
+            }
+            else if (!fastTurning && horizontalForce * GetComponent<Rigidbody2D>().velocity.x < 0f)
+            {
+                fastTurning = true;
+                turningVelocity = GetComponent<Rigidbody2D>().velocity.x;
+                momentumBuilt = -GetComponent<Rigidbody2D>().velocity.x;
+                //Debug.Log("movement and input inverse, enabling fastTurning");
+            }
 
-        if (fastTurning)
-        {
-            turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref smoothDampVelocity, fastTurnTime);
-            GetComponent<Rigidbody2D>().velocity = new Vector2(turningVelocity, GetComponent<Rigidbody2D>().velocity.y);
-            if (Mathf.Abs(momentumBuilt) > highSpeed) FireHigh();
-            else if (Mathf.Abs(momentumBuilt) > mediumSpeed) FireMedium();
-            else FireLow();
+            if (fastTurning)
+            {
+                turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref smoothDampVelocity, fastTurnTime);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(turningVelocity, GetComponent<Rigidbody2D>().velocity.y);
+                if (Mathf.Abs(momentumBuilt) > highSpeed) FireHigh();
+                else if (Mathf.Abs(momentumBuilt) > mediumSpeed) FireMedium();
+                else FireLow();
+            }
+            else
+            {
+                GetComponent<ConstantForce2D>().force = new Vector2(horizontalForce, 0f);
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > highSpeed) FireHigh();
+                else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > mediumSpeed) FireMedium();
+                else FireLow();
+            }
+            //Debug.Log("velocity = " + GetComponent<Rigidbody2D>().velocity.x + ", fastTurning = " + fastTurning + ", IsGrounded = " + IsGrounded());
         }
         else
         {
-            GetComponent<ConstantForce2D>().force = new Vector2(horizontalForce, 0f);
-            if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > highSpeed) FireHigh();
-            else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > mediumSpeed) FireMedium();
-            else FireLow();
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
+            GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
         }
-        //Debug.Log("velocity = " + GetComponent<Rigidbody2D>().velocity.x + ", fastTurning = " + fastTurning + ", IsGrounded = " + IsGrounded());
     }
 
 
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
         int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
         Vector2 leftRayOrigin = new Vector2(transform.position.x - capsuleWidth / 2, transform.position.y);

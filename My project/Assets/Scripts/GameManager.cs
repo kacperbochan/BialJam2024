@@ -31,10 +31,12 @@ public class GameManager : MonoBehaviour
                 default:
                 case GameState.Playing:
                     Time.timeScale = NORMAL_SPEED;
+                    PlayerInput.Instance.EnablePlayerInput();
                     pausedCanvas.SetActive(false);
                     break;
                 case GameState.Paused:
                     Time.timeScale = PAUSED_SPEED;
+                    PlayerInput.Instance.DisablePlayerInput();
                     pausedCanvas.SetActive(true);
                     break;
             }
