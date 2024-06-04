@@ -161,6 +161,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""896e8865-9207-47bc-8bc1-4e4b7f57bdca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -240,6 +249,45 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ReverseJump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""406a4235-05d7-467f-b475-6152eede96cd"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Others"",
+            ""id"": ""2908a02e-b6b9-4c6a-ae47-14b4e4698dc2"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7950ae6-3d5a-4923-af31-0ffaec600fb7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6b4fc6ea-5197-469b-8146-40a8100fd626"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -258,6 +306,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player2_Move = m_Player2.FindAction("Move", throwIfNotFound: true);
         m_Player2_Create = m_Player2.FindAction("Create", throwIfNotFound: true);
         m_Player2_GravityFlip = m_Player2.FindAction("GravityFlip", throwIfNotFound: true);
+        m_Player2_Restart = m_Player2.FindAction("Restart", throwIfNotFound: true);
+        // Others
+        m_Others = asset.FindActionMap("Others", throwIfNotFound: true);
+        m_Others_Pause = m_Others.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -386,6 +438,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player2_Move;
     private readonly InputAction m_Player2_Create;
     private readonly InputAction m_Player2_GravityFlip;
+    private readonly InputAction m_Player2_Restart;
     public struct Player2Actions
     {
         private @PlayerInputActions m_Wrapper;
@@ -395,6 +448,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player2_Move;
         public InputAction @Create => m_Wrapper.m_Player2_Create;
         public InputAction @GravityFlip => m_Wrapper.m_Player2_GravityFlip;
+        public InputAction @Restart => m_Wrapper.m_Player2_Restart;
         public InputActionMap Get() { return m_Wrapper.m_Player2; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -419,6 +473,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @GravityFlip.started += instance.OnGravityFlip;
             @GravityFlip.performed += instance.OnGravityFlip;
             @GravityFlip.canceled += instance.OnGravityFlip;
+            @Restart.started += instance.OnRestart;
+            @Restart.performed += instance.OnRestart;
+            @Restart.canceled += instance.OnRestart;
         }
 
         private void UnregisterCallbacks(IPlayer2Actions instance)
@@ -438,6 +495,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @GravityFlip.started -= instance.OnGravityFlip;
             @GravityFlip.performed -= instance.OnGravityFlip;
             @GravityFlip.canceled -= instance.OnGravityFlip;
+            @Restart.started -= instance.OnRestart;
+            @Restart.performed -= instance.OnRestart;
+            @Restart.canceled -= instance.OnRestart;
         }
 
         public void RemoveCallbacks(IPlayer2Actions instance)
@@ -455,6 +515,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public Player2Actions @Player2 => new Player2Actions(this);
+
+    // Others
+    private readonly InputActionMap m_Others;
+    private List<IOthersActions> m_OthersActionsCallbackInterfaces = new List<IOthersActions>();
+    private readonly InputAction m_Others_Pause;
+    public struct OthersActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public OthersActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Others_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_Others; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OthersActions set) { return set.Get(); }
+        public void AddCallbacks(IOthersActions instance)
+        {
+            if (instance == null || m_Wrapper.m_OthersActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OthersActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IOthersActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IOthersActions instance)
+        {
+            if (m_Wrapper.m_OthersActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOthersActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OthersActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OthersActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OthersActions @Others => new OthersActions(this);
     public interface IPlayer1Actions
     {
         void OnJump(InputAction.CallbackContext context);
@@ -468,5 +574,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnCreate(InputAction.CallbackContext context);
         void OnGravityFlip(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
+    }
+    public interface IOthersActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

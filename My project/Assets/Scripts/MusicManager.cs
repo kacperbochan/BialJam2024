@@ -3,20 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class MusicManager : MonoBehaviour
 {
-    // singleton
     public static MusicManager Instance { get; private set; }
 
     private void Awake()
     {
-        // MusicManager should be on every scene for testing purposes
-        // this code makes it survive scene changes, but if another MusicManager already lives, it kills itself so there's only one at a time
-        if (Instance != null)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject);
-            return;
         }
-        Instance = this;
-        DontDestroyOnLoad(this);
     }
 
     [SerializeField] private FMODUnity.EventReference musicEvent;
@@ -24,7 +23,6 @@ public class MusicManager : MonoBehaviour
 
     private void Start()
     {
-        // start music
         musicInstance = FMODUnity.RuntimeManager.CreateInstance(musicEvent);
         musicInstance.start();
 

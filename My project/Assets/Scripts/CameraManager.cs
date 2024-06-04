@@ -52,6 +52,43 @@ public class CameraManager : MonoBehaviour
         backgroundCamera3 = FindObjectOfType<BackgroundCamera3>().GetComponent<Camera>();
     }
 
+    private void Start()
+    {
+        PlayerInput.Instance.OnRestartRequested += PlayerInput_OnRestartRequested;
+    }
+
+    private void PlayerInput_OnRestartRequested(object sender, System.EventArgs e)
+    {
+        switch (currentStage)
+        {
+            default:
+            case 1:
+                GoToStage1();
+                break;
+            case 2:
+                GoToStage2();
+                break;
+            case 3:
+                GoToStage3();
+                break;
+            case 4:
+                GoToStage4();
+                break;
+            case 5:
+                GoToStage5();
+                break;
+            case 6:
+                GoToStage6();
+                break;
+            case 7:
+                GoToStage7();
+                break;
+            case 8:
+                GoToStage8();
+                break;
+        }
+    }
+
     private static void SetCameraTargetsToStage(int number)
     {
         backgroundCamera1TargetX = INITIAL_BACKGROUND_CAMERA_POSITION + (number - 1) * BACKGROUND_CAMERA_1_MOVE;
@@ -189,40 +226,5 @@ public class CameraManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(mainCameraTargetX, mainCameraTargetY, Camera.main.transform.position.z);
         Camera.main.orthographicSize = mainCameraTargetS;
         Letterbox.Instance.UpdateLetterbox();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            switch (currentStage)
-            {
-                default:
-                case 1:
-                    GoToStage1();
-                    break;
-                case 2:
-                    GoToStage2();
-                    break;
-                case 3:
-                    GoToStage3();
-                    break;
-                case 4:
-                    GoToStage4();
-                    break;
-                case 5:
-                    GoToStage5();
-                    break;
-                case 6:
-                    GoToStage6();
-                    break;
-                case 7:
-                    GoToStage7();
-                    break;
-                case 8:
-                    GoToStage8();
-                    break;
-            }
-        }
     }
 }

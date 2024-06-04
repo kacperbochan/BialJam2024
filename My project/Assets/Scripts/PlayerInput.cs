@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
-    // singleton
     public static PlayerInput Instance { get; private set; }
 
     public event EventHandler OnPlayer1Jump;
@@ -13,14 +12,14 @@ public class PlayerInput : MonoBehaviour
     public event EventHandler OnPlayer2ReverseJump;
     public event EventHandler OnPlayer2Create;
     public event EventHandler OnPlayer2GravityFlip;
+    public event EventHandler OnPauseRequested;
+    public event EventHandler OnRestartRequested;
     private PlayerInputActions playerInputActions;
 
     private void Awake()
     {
         Instance = this;
-
         playerInputActions = new();
-
         EnableInput();
     }
 
@@ -40,6 +39,20 @@ public class PlayerInput : MonoBehaviour
         playerInputActions.Player2.ReverseJump.performed += Player2ReverseJump;
         playerInputActions.Player2.Create.performed += Player2Create;
         playerInputActions.Player2.GravityFlip.performed += Player2GravityFlip;
+        playerInputActions.Player2.Restart.performed += Restart_performed;
+
+        playerInputActions.Others.Enable();
+        playerInputActions.Others.Pause.performed += Pause_performed;
+    }
+
+    private void Restart_performed(InputAction.CallbackContext obj)
+    {
+        OnRestartRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
+    {
+        OnPauseRequested?.Invoke(this, EventArgs.Empty);
     }
 
     public void DisableInput()
@@ -53,6 +66,10 @@ public class PlayerInput : MonoBehaviour
         playerInputActions.Player2.ReverseJump.performed -= Player2ReverseJump;
         playerInputActions.Player2.Create.performed -= Player2Create;
         playerInputActions.Player2.GravityFlip.performed -= Player2GravityFlip;
+        playerInputActions.Player2.Restart.performed -= Restart_performed;
+
+        playerInputActions.Others.Disable();
+        playerInputActions.Others.Pause.performed -= Pause_performed;
     }
 
     private void Player1Jump(InputAction.CallbackContext obj)
