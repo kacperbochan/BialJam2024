@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayButtonImage : MonoBehaviour
 {
-    private const string LEVEL_SCENE_NAME = "LevelScene";
+    [SerializeField] private PlayButton playButton;
     public void StartGame()
     {
         MusicManager.Instance.GoToGame();
-        SceneManager.LoadScene(LEVEL_SCENE_NAME);
+        playButton.SwitchScene();
     }
 }

@@ -1,25 +1,38 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayButton : MonoBehaviour
 {
     [SerializeField] private Animator animator;
+    private AsyncOperation sceneLoad;
+    private const string LEVEL_SCENE_NAME = "LevelScene";
+
     private void Start()
     {
-
         GetComponent<Button>().onClick.AddListener(() => {
-            animator.SetTrigger("clicked");
-            MusicManager.Instance.StartMusicIfNotStartedYet();
+            Play();
         });
-
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("space") ||
-            Input.GetKeyDown("return"))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
         {
-            animator.SetTrigger("clicked");
+            Play();
         }
+    }
+
+    private void Play()
+    {
+        animator.SetTrigger("clicked");
+        MusicManager.Instance.StartMusicIfNotStartedYet();
+        sceneLoad = SceneManager.LoadSceneAsync(LEVEL_SCENE_NAME);
+        sceneLoad.allowSceneActivation = false;
+    }
+    public void SwitchScene()
+    {
+        sceneLoad.allowSceneActivation = true;
     }
 }
