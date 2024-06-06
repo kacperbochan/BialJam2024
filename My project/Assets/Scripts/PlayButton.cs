@@ -11,6 +11,7 @@ public class PlayButton : MonoBehaviour
     private void Start()
     {
         GetComponent<Button>().onClick.AddListener(() => {
+            GetComponent<Button>().enabled = false;
             Play();
         });
         GetComponent<Button>().Select();
