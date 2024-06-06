@@ -31,6 +31,7 @@ public class Removable : MonoBehaviour
         {
             Disable();
         }
+        OnAnyBurn?.Invoke(this, EventArgs.Empty);
     }
 
     private void Disable()
@@ -43,10 +44,8 @@ public class Removable : MonoBehaviour
             GetComponent<BoxCollider2D>().isTrigger = true;
             GetComponent<SpriteRenderer>().enabled = false;
 
-            OnAnyBurn?.Invoke(this, EventArgs.Empty);
-
             burnParticle.SetActive(true);
-            GameObject burnParticleInst = Instantiate(burnParticle, transform.position, transform.rotation);
+            Instantiate(burnParticle, transform.position, transform.rotation);
         }
     }
 

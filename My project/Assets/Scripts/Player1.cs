@@ -187,30 +187,19 @@ public class Player1 : MonoBehaviour
         GetComponentInChildren<Player1Visual>().FireOn();
         lastBurnTime = Time.time;
 
-        if (IsGrounded()) 
+        if (!IsGrounded() || (IsGrounded() && (Time.time - lastAirTime > airBurnForbidTime))) 
         { 
-            if (Time.time - lastAirTime > airBurnForbidTime)
-            {
-                while (touching.Count > 0)
-                {
-                    touching[0].Burn();
-                    touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
-                }
-                /*
-                foreach (Removable removable in touching)
-                {
-                    removable.Burn();
-                }
-                */
-            }
-        }
-        else 
-        {
-           while (touching.Count > 0)
+            while (touching.Count > 0)
             {
                 touching[0].Burn();
                 touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
             }
+            /*
+            foreach (Removable removable in touching)
+            {
+                removable.Burn();
+            }
+            */
         }
     }
 

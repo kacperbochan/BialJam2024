@@ -53,16 +53,16 @@ public class Player2 : MonoBehaviour
 
     private void PlayerInput_OnPlayer2Create(object sender, System.EventArgs e)
     {
+        bool builtSomething = false;
         if (buildTrigger != null) foreach(Removable removable in buildTrigger.removables)
         {
             if (!removable.built)
             {
                 removable.Build();
-                OnBuild?.Invoke(this, EventArgs.Empty);
-                Debug.Log("player 2 built a platform");
+                builtSomething = true;
             }
         }
-        Debug.Log("player 2 is done building");
+        if (builtSomething) OnBuild?.Invoke(this, EventArgs.Empty);
     }
     
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
