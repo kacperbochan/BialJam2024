@@ -8,13 +8,15 @@ public class NextLevelTrigger : MonoBehaviour
     private const int TOTAL_PLAYERS = 2;
     [SerializeField] private int targetLevel = 2;
     public static event EventHandler OnNextLevel;
+    private bool triggered = false;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         colliders.Add(collision);
-        if (colliders.Count == TOTAL_PLAYERS)
+        if (colliders.Count == TOTAL_PLAYERS && !triggered)
         {
             NextLevel();
+            triggered = true;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
