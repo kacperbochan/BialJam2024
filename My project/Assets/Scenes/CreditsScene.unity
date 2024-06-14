@@ -643,7 +643,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CLICK TO CONTINUE
+  m_text: click to continue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -1159,7 +1159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mateusz Kozlowski - Unity programming
+  m_text: Mateusz Kozlowski - additional Unity programming
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -1293,7 +1293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Credits
+  m_text: credits
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -1560,7 +1560,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Audio Engine: FMOD Studio by Firelight Technologies Pty Ltd.'
+  m_text: 'audio engine: FMOD Studio by Firelight Technologies Pty Ltd.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
@@ -1666,10 +1666,10 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 991811944}
+  - {fileID: 331292981}
   - {fileID: 1743808195}
   - {fileID: 372353069}
-  - {fileID: 331292981}
-  - {fileID: 991811944}
   - {fileID: 1015576296}
   - {fileID: 1334599864}
   m_Father: {fileID: 665344426}

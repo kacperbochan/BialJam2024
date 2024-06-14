@@ -274,7 +274,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 573638945045109947, guid: 459ba9998591f0145bd5dc36fb58f82e, type: 3}
       propertyPath: m_text
-      value: CREDITS
+      value: credits
       objectReference: {fileID: 0}
     - target: {fileID: 4976161884400001747, guid: 459ba9998591f0145bd5dc36fb58f82e, type: 3}
       propertyPath: m_Pivot.x
@@ -505,7 +505,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 573638945045109947, guid: 459ba9998591f0145bd5dc36fb58f82e, type: 3}
       propertyPath: m_text
-      value: QUIT
+      value: quit
       objectReference: {fileID: 0}
     - target: {fileID: 4976161884400001747, guid: 459ba9998591f0145bd5dc36fb58f82e, type: 3}
       propertyPath: m_Pivot.x
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
   m_sharedMaterial: {fileID: 6924342559521651644, guid: 259811a2f53b34b4d91a7b1273d1ef15, type: 2}
