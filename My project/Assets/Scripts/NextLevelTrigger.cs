@@ -9,7 +9,10 @@ public class NextLevelTrigger : MonoBehaviour
     [SerializeField] private int targetLevel = 2;
     public static event EventHandler OnNextLevel;
     private bool triggered = false;
-
+    public static void ResetStaticData()
+    {
+        OnNextLevel = null;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         colliders.Add(collision);

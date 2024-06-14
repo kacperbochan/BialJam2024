@@ -7,7 +7,10 @@ public class Removable : MonoBehaviour
     public bool built;
     public static event EventHandler OnAnyBurn;
     [SerializeField] private GameObject burnParticle;
-
+    public static void ResetStaticData()
+    {
+        OnAnyBurn = null;
+    }
     private void Awake()
     {
         //gameObject.SetActive(built);
@@ -16,7 +19,6 @@ public class Removable : MonoBehaviour
         GetComponent<BoxCollider2D>().isTrigger = !built;
         GetComponent<SpriteRenderer>().enabled = built;
     }
-
     public void Burn()
     {
         Cascade cascadeParent = gameObject.GetComponentInParent<Cascade>();
@@ -33,7 +35,6 @@ public class Removable : MonoBehaviour
         }
         OnAnyBurn?.Invoke(this, EventArgs.Empty);
     }
-
     private void Disable()
     {
         if (built)
@@ -48,7 +49,6 @@ public class Removable : MonoBehaviour
             Instantiate(burnParticle, transform.position, transform.rotation);
         }
     }
-
     public void Build()
     {
 
