@@ -1924,7 +1924,6 @@ GameObject:
   - component: {fileID: 326897346}
   - component: {fileID: 326897345}
   - component: {fileID: 326897344}
-  - component: {fileID: 326897347}
   m_Layer: 6
   m_Name: LetterboxUp
   m_TagString: Untagged
@@ -2071,18 +2070,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &326897347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 326897342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db730d1af7b14c42a1f23163f1a9c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &345913737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2437407095468335263, guid: b1b573d21f8fc6c428c9385ee92f19a9, type: 3}
@@ -2754,7 +2741,6 @@ GameObject:
   - component: {fileID: 412502325}
   - component: {fileID: 412502324}
   - component: {fileID: 412502323}
-  - component: {fileID: 412502326}
   m_Layer: 6
   m_Name: LetterboxLeft
   m_TagString: Untagged
@@ -2901,18 +2887,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &412502326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412502321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db730d1af7b14c42a1f23163f1a9c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &416224480 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 485817735647372999, guid: da1f95574672e0846b619742408a58d0, type: 3}
@@ -3869,7 +3843,6 @@ GameObject:
   - component: {fileID: 571949622}
   - component: {fileID: 571949621}
   - component: {fileID: 571949620}
-  - component: {fileID: 571949623}
   m_Layer: 6
   m_Name: LetterboxDown
   m_TagString: Untagged
@@ -4016,18 +3989,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &571949623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571949618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db730d1af7b14c42a1f23163f1a9c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &577992492
 GameObject:
   m_ObjectHideFlags: 0
@@ -25031,7 +24992,6 @@ GameObject:
   - component: {fileID: 1036824754}
   - component: {fileID: 1036824753}
   - component: {fileID: 1036824752}
-  - component: {fileID: 1036824755}
   m_Layer: 6
   m_Name: LetterboxRight
   m_TagString: Untagged
@@ -25178,18 +25138,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1036824755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1036824750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db730d1af7b14c42a1f23163f1a9c4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1040080480
 GameObject:
   m_ObjectHideFlags: 0
