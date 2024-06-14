@@ -19,6 +19,7 @@ public class Player1 : MonoBehaviour
     [SerializeField] private float fastTurnTime; 
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float burnSpeed;
+    [SerializeField] private float speedCurveExponent = 3f;
     [SerializeField] private float slopeCompensation;
 
     [SerializeField] private float jumpPower;
@@ -54,6 +55,21 @@ public class Player1 : MonoBehaviour
     public event EventHandler OnPlayer1Jump;
     public event EventHandler OnPlayer1BurnOn;
     public event EventHandler OnPlayer1BurnOff;
+
+    private float _speed;
+    private float Speed
+    {
+        get => _speed;
+        set
+        {
+            _speed = value;
+
+            // better curve than linear: faster acceleration at start, fine control near max
+            float fractionOfMaxSpeed = Speed / maximumSpeed;
+            float newFractionOfMaxSpeed = Mathf.Sign(fractionOfMaxSpeed) * (1 - Mathf.Pow(1 - Mathf.Abs(fractionOfMaxSpeed), speedCurveExponent));
+            GetComponent<Rigidbody2D>().velocity = new Vector2(maximumSpeed * newFractionOfMaxSpeed, GetComponent<Rigidbody2D>().velocity.y);
+        }
+    }
 
     private void Start()
     {
@@ -109,8 +125,7 @@ public class Player1 : MonoBehaviour
             else if (TimeSince(lastGroundedTime) < coyoteTime && TimeSince(lastJumpTime) > repeatedJumpForbidTime)
             {
                 // perform actual jump
-                Vector3 velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, GravityNormal() ? jumpPower : -jumpPower, velocity.z);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, GravityNormal() ? jumpPower : -jumpPower);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
                 OnPlayer1Jump?.Invoke(this, EventArgs.Empty); //for visuals
@@ -120,7 +135,7 @@ public class Player1 : MonoBehaviour
         if (movementDisabled)
         {
             // stop abruptly to prevent high jump with gravity flips
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
+            Speed = 0f;
         }
         else
         {
@@ -137,18 +152,18 @@ public class Player1 : MonoBehaviour
             else if (!fastTurning && targetSpeed * GetComponent<Rigidbody2D>().velocity.x < 0f)
             {
                 fastTurning = true; //start fast turning
-                turningVelocity = GetComponent<Rigidbody2D>().velocity.x;
-                momentumBuilt = -GetComponent<Rigidbody2D>().velocity.x;
+                turningVelocity = Speed;
+                momentumBuilt = -Speed;
             }
 
             if (fastTurning)
             {
                 turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref fastTurningSmoothDampVelocity, fastTurnTime);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(turningVelocity, GetComponent<Rigidbody2D>().velocity.y);
+                Speed = turningVelocity;
             }
 
             // actual acceleration and deceleration
-            float currentSpeed = GetComponent<Rigidbody2D>().velocity.x;
+            float currentSpeed = Speed;
             if (currentSpeed < targetSpeed)
             {
                 float maxAcceleration = acceleration * Time.deltaTime;
@@ -159,13 +174,14 @@ public class Player1 : MonoBehaviour
                 float maxDeceleration = deceleration * Time.deltaTime;
                 currentSpeed = Mathf.Max(targetSpeed, currentSpeed - maxDeceleration);
             }
-            GetComponent<Rigidbody2D>().velocity = new Vector2(currentSpeed, GetComponent<Rigidbody2D>().velocity.y);
+            Speed = currentSpeed;
 
             // slope handling
             float gravity = GetComponent<Rigidbody2D>().gravityScale * GetComponent<Rigidbody2D>().mass;
-            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x - GetSlope() * gravity / 2f * slopeCompensation, GetComponent<Rigidbody2D>().velocity.y);
+            Speed = Speed - GetSlope() * gravity * slopeCompensation;
 
-            if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > burnSpeed) FireOn();
+            // are we burning
+            if (Mathf.Abs(Speed) > burnSpeed) FireOn();
             else FireOff();
         }
     }

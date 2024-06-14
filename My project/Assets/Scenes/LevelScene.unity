@@ -523,7 +523,7 @@ Transform:
   m_GameObject: {fileID: 106456175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 37.028572, y: -600, z: -30}
+  m_LocalPosition: {x: 9.6, y: -600, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1787,8 +1787,8 @@ Transform:
   m_GameObject: {fileID: 326897342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 62.3, y: 70.8, z: 0}
-  m_LocalScale: {x: 126, y: 126, z: 126}
+  m_LocalPosition: {x: 6, y: 103.5, z: 0}
+  m_LocalScale: {x: 180, y: 180, z: 180}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 246128297}
@@ -2616,8 +2616,8 @@ Transform:
   m_GameObject: {fileID: 412502321}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.914002, y: 1.5, z: 0}
-  m_LocalScale: {x: 126, y: 126, z: 126}
+  m_LocalPosition: {x: -100.02, y: 4.5, z: 0}
+  m_LocalScale: {x: 180, y: 180, z: 180}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 246128297}
@@ -3245,7 +3245,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 6.3
+  orthographic size: 9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -3270,7 +3270,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.3, y: 1.5, z: -30}
+  m_LocalPosition: {x: 6, y: 4.5, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3625,8 +3625,8 @@ Transform:
   m_GameObject: {fileID: 571949618}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 62.3, y: -67.8, z: 0}
-  m_LocalScale: {x: 126, y: 126, z: 126}
+  m_LocalPosition: {x: 6, y: -94.5, z: 0}
+  m_LocalScale: {x: 180, y: 180, z: 180}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 246128297}
@@ -12961,7 +12961,7 @@ Transform:
   m_GameObject: {fileID: 730011085}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26.057142, y: -500, z: -30}
+  m_LocalPosition: {x: 9.6, y: -500, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -23396,8 +23396,8 @@ Transform:
   m_GameObject: {fileID: 874569244}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 49.7, y: 1.5, z: 0}
-  m_LocalScale: {x: 1.26, y: 1.26, z: 1.26}
+  m_LocalPosition: {x: -12, y: 4.5, z: 0}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 246128297}
@@ -24079,7 +24079,7 @@ Transform:
   m_GameObject: {fileID: 961779264}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48, y: -700, z: -30}
+  m_LocalPosition: {x: 9.6, y: -700, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24640,8 +24640,8 @@ Transform:
   m_GameObject: {fileID: 1036824750}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 136.514, y: 1.5, z: 0}
-  m_LocalScale: {x: 126, y: 126, z: 126}
+  m_LocalPosition: {x: 112.02, y: 4.5, z: 0}
+  m_LocalScale: {x: 180, y: 180, z: 180}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 246128297}
@@ -72228,7 +72228,7 @@ Transform:
   m_GameObject: {fileID: 1046000270783432992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55, y: -3, z: 0}
+  m_LocalPosition: {x: -6, y: -3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -72782,7 +72782,7 @@ Transform:
   m_GameObject: {fileID: 8004965471320133854}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 54, y: -3, z: 0}
+  m_LocalPosition: {x: 11, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -72802,11 +72802,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceleration: 12
-  deceleration: 12
+  deceleration: 15
   fastTurnTime: 0.1
   maximumSpeed: 8
   burnSpeed: 7.8
-  slopeCompensation: 0.8
+  speedCurveExponent: 2
+  slopeCompensation: 0.3
   jumpPower: 18
   coyoteTime: 0.05
   repeatedJumpForbidTime: 0.05
