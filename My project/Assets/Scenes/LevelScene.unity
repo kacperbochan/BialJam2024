@@ -1572,6 +1572,7 @@ GameObject:
   m_Component:
   - component: {fileID: 297947773}
   - component: {fileID: 297947772}
+  - component: {fileID: 297947774}
   m_Layer: 0
   m_Name: MusicManager
   m_TagString: Untagged
@@ -1613,6 +1614,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &297947774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297947771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9468c5f457ace64f8d4df6d642b107f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoadEvent: 1
+  UnloadEvent: 0
+  Banks:
+  - Master
+  - Master.strings
+  CollisionTag: 
+  PreloadSamples: 1
 --- !u!224 &298706118 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4976161884400001747, guid: 459ba9998591f0145bd5dc36fb58f82e, type: 3}
