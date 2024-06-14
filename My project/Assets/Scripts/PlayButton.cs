@@ -14,7 +14,6 @@ public class PlayButton : MonoBehaviour
             GetComponent<Button>().enabled = false;
             Play();
         });
-        GetComponent<Button>().Select();
     }
 
     private void Play()
