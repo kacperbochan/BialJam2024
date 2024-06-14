@@ -22,10 +22,13 @@ public class Player2 : MonoBehaviour
     [SerializeField] private float repeatedJumpForbidTime;
     [SerializeField] private float jumpBufferTime;
 
+    [SerializeField] private float buildCooldown;
+
     private bool jumpRequest = false;
     private float jumpRequestTime;
     private float lastJumpTime = 0f;
     private float lastGroundedTime;
+    private float lastBuildTime = Mathf.NegativeInfinity;
 
     private bool movementDisabled = false;
 
@@ -72,7 +75,7 @@ public class Player2 : MonoBehaviour
     private void PlayerInput_OnPlayer2Create(object sender, EventArgs e)
     {
         bool builtSomething = false;
-        if (buildTrigger != null)
+        if (buildTrigger != null && TimeSince(lastBuildTime) > buildCooldown)
         {
             foreach (Removable removable in buildTrigger.removables)
             {
@@ -83,7 +86,11 @@ public class Player2 : MonoBehaviour
                 }
             }
         }
-        if (builtSomething) OnBuild?.Invoke(this, EventArgs.Empty); //for sounds
+        if (builtSomething)
+        {
+            OnBuild?.Invoke(this, EventArgs.Empty); //for sounds
+            lastBuildTime = Time.time;
+        }
     }
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
     {

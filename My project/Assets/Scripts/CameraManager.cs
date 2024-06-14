@@ -208,7 +208,7 @@ public class CameraManager : MonoBehaviour
     }
     public void GoToStage(int stage)
     {
-        Debug.Log("going to stage " + stage);
+        //Debug.Log("going to stage " + stage);
         currentStage = stage;
         SetCameraTargetsToStage(stage);
         StartCoroutine(MoveCameras());
