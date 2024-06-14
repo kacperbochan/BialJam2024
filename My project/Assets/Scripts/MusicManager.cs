@@ -83,13 +83,8 @@ public class MusicManager : MonoBehaviour
         musicInstance.setParameterByName("state", 2);
     }
 
-    public void GravityFlipOn()
+    public void GravityFlip(bool isOn)
     {
-        musicInstance.setParameterByName("gravity", 1f);
-    }
-
-    public void GravityFlipOff()
-    {
-        musicInstance.setParameterByName("gravity", 0f);
+        musicInstance.setParameterByName("gravity", isOn ? 1f : 0f);
     }
 }

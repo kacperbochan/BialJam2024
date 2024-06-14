@@ -14,19 +14,19 @@ public class Player1 : MonoBehaviour
         Instance = this;
     }
 
-    [SerializeField] private float acceleration = 1f;
-    [SerializeField] private float deceleration = 1f;
-    [SerializeField] private float maximumSpeed = 5f;
-    [SerializeField] private float burnSpeed = 12f;
+    [SerializeField] private float acceleration;
+    [SerializeField] private float deceleration;
+    [SerializeField] private float fastTurnTime; 
+    [SerializeField] private float maximumSpeed;
+    [SerializeField] private float burnSpeed;
 
-    [SerializeField] private float jumpPower = 1f;
-    [SerializeField] private float fastTurnTime = 0.1f;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float coyoteTime;
+    [SerializeField] private float repeatedJumpForbidTime;
+    [SerializeField] private float jumpBufferTime;
 
-    [SerializeField] private float coyoteTime = .05f;
-    [SerializeField] private float repeatedJumpForbidTime = .05f;
-    [SerializeField] private float jumpBufferTime = .05f;
-    [SerializeField] private float burnTime = .05f;
-    [SerializeField] private float airBurnForbidTime = .5f;
+    [SerializeField] private float burnTime;
+    [SerializeField] private float airBurnForbidTime;
 
     private float targetSpeed;
     private bool fastTurning = false;
@@ -59,7 +59,7 @@ public class Player1 : MonoBehaviour
         PlayerInput.Instance.OnPlayer1Jump += PlayerInput_OnPlayer1Jump;
         PlayerInput.Instance.OnPlayer1ReverseJump += PlayerInput_OnPlayer1ReverseJump;
     }
-    private void PlayerInput_OnPlayer1Jump(object sender, System.EventArgs e)
+    private void PlayerInput_OnPlayer1Jump(object sender, EventArgs e)
     {
         if (GravityNormal())
         {
@@ -67,7 +67,7 @@ public class Player1 : MonoBehaviour
             jumpRequestTime = Time.time;
         }
     }
-    private void PlayerInput_OnPlayer1ReverseJump(object sender, System.EventArgs e)
+    private void PlayerInput_OnPlayer1ReverseJump(object sender, EventArgs e)
     {
         if (!GravityNormal())
         {
@@ -118,6 +118,7 @@ public class Player1 : MonoBehaviour
 
         if (movementDisabled)
         {
+            // stop abruptly to prevent high jump with gravity flips
             GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
         }
         else
@@ -166,18 +167,8 @@ public class Player1 : MonoBehaviour
 
     public bool IsGrounded()
     {
-        int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
-        Vector2 leftRayOrigin = new(transform.position.x - GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
-        Vector2 rightRayOrigin = new(transform.position.x + GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
-        Vector2 centerRayOrigin = new(transform.position.x, transform.position.y);
-
-        bool normalGravity = GetComponent<Rigidbody2D>().gravityScale > 0f;
-
-        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
-        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
-        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
-
-        return leftRayHit || rightRayHit || centerRayHit;
+        CapsuleCollider2D cc = GetComponent<CapsuleCollider2D>();
+        return Physics2D.CapsuleCast(transform.position, cc.size, cc.direction, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
     }
 
     private void FireOff()

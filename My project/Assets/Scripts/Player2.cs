@@ -5,32 +5,6 @@ using UnityEngine;
 public class Player2 : MonoBehaviour
 {
     public static Player2 Instance { get; private set; }
-
-    [SerializeField] private float jumpPower = 1f;
-    [SerializeField] private float horizontalForceScale = 1f;
-    [SerializeField] private float fastTurnTime = 0.1f;
-    [SerializeField] private float distanceToGround = 0.1f;
-    [SerializeField] private float rebounceTime = .2f;
-    [SerializeField] private float coyoteTime = .2f;
-    private bool fastTurning = false;
-    private float momentumBuilt = 0f;
-    private float turningVelocity;
-    private float smoothDampVelocity;
-    private const float NEGLIGIBLE_DIFFERENCE = 0.01f;
-    private const int WORLD_PLATFORM_LAYER = 8;
-    private bool jumpRequest = false;
-    private float jumpRequestTime;
-    private float lastJumpTime = 0f;
-    private float lastGroundedTime;
-    private BuildTrigger buildTrigger = null;
-    private GravityFlipTrigger gravityFlipTrigger = null;
-    public event EventHandler OnBuild;
-    public event EventHandler OnGravityFlip;
-    private float gravityFlipTime = Mathf.NegativeInfinity;
-    private float capsuleWidth;
-    [SerializeField] private float gravityFlipCooldown = 1f;
-    private bool movementDisabled = false;
-
     private void Awake()
     {
         Instance = this;
@@ -40,89 +14,105 @@ public class Player2 : MonoBehaviour
         Instance = this;
     }
 
+    // player 2 uses instant movement (infinity acceleration and deceleration)
+    [SerializeField] private float maximumSpeed;
+
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float coyoteTime;
+    [SerializeField] private float repeatedJumpForbidTime;
+    [SerializeField] private float jumpBufferTime;
+
+    private bool jumpRequest = false;
+    private float jumpRequestTime;
+    private float lastJumpTime = 0f;
+    private float lastGroundedTime;
+
+    private bool movementDisabled = false;
+
+    private const float DISTANCE_TO_GROUND = 0.1f;
+    private const float NEGLIGIBLE_DIFFERENCE = 0.01f;
+    private const int WORLD_PLATFORM_LAYER = 8;
+
+    private BuildTrigger buildTrigger = null;
+    private GravityFlipTrigger gravityFlipTrigger = null;
+    public event EventHandler OnBuild;
+    public event EventHandler OnGravityFlip;
+
     private void Start()
     {
         PlayerInput.Instance.OnPlayer2Jump += PlayerInput_OnPlayer2Jump;
         PlayerInput.Instance.OnPlayer2ReverseJump += PlayerInput_OnPlayer2ReverseJump;
         PlayerInput.Instance.OnPlayer2Create += PlayerInput_OnPlayer2Create;
         PlayerInput.Instance.OnPlayer2GravityFlip += PlayerInput_OnPlayer2GravityFlip;
-
-        CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
-        capsuleWidth = capsuleCollider.size.x;
     }
-
-    private void PlayerInput_OnPlayer2Create(object sender, System.EventArgs e)
+    private void PlayerInput_OnPlayer2Jump(object sender, EventArgs e)
+    {
+        if (GravityNormal())
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
+    }
+    private void PlayerInput_OnPlayer2ReverseJump(object sender, EventArgs e)
+    {
+        if (!GravityNormal())
+        {
+            jumpRequest = true;
+            jumpRequestTime = Time.time;
+        }
+    }
+    private bool GravityNormal()
+    {
+        return GetComponent<Rigidbody2D>().gravityScale > 0f;
+    }
+    private float TimeSince(float timePoint)
+    {
+        return Time.time - timePoint;
+    }
+    private void PlayerInput_OnPlayer2Create(object sender, EventArgs e)
     {
         bool builtSomething = false;
-        if (buildTrigger != null) foreach(Removable removable in buildTrigger.removables)
+        if (buildTrigger != null)
         {
-            if (!removable.built)
+            foreach (Removable removable in buildTrigger.removables)
             {
-                removable.Build();
-                builtSomething = true;
+                if (!removable.built)
+                {
+                    removable.Build();
+                    builtSomething = true;
+                }
             }
         }
-        if (builtSomething) OnBuild?.Invoke(this, EventArgs.Empty);
+        if (builtSomething) OnBuild?.Invoke(this, EventArgs.Empty); //for sounds
     }
-    
     private void PlayerInput_OnPlayer2GravityFlip(object sender, System.EventArgs e)
     {
-        if (gravityFlipTrigger != null && Time.time - gravityFlipTime > gravityFlipCooldown)
+        if (gravityFlipTrigger != null && !movementDisabled)
         {
             foreach (Rigidbody2D rigidbody2D in FindObjectsByType<Rigidbody2D>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
                 rigidbody2D.gravityScale *= -1;
             }
-            OnGravityFlip?.Invoke(this, EventArgs.Empty);
-            gravityFlipTime = Time.time;
-            StartCoroutine(DisableInputWhileCooldown());
-            if (GetComponent<Rigidbody2D>().gravityScale < 0f)
-            {
-                MusicManager.Instance.GravityFlipOn();
-            }
-            else
-            {
-                MusicManager.Instance.GravityFlipOff();
-            }
+            OnGravityFlip?.Invoke(this, EventArgs.Empty); //for visuals
+            StartCoroutine(DisableInputUntilBothGrounded());
+            MusicManager.Instance.GravityFlip(!GravityNormal());
         }
-        //Debug.Log("player 2 gravity flip");
     }
-
-    private IEnumerator DisableInputWhileCooldown()
+    private IEnumerator DisableInputUntilBothGrounded()
     {
-        DisableMovement();
         Player1.Instance.DisableMovement();
-        while (true)
-        {
-            if (IsGrounded() && Player1.Instance.IsGrounded()) break;
-            yield return null;
-        }
-        EnableMovement();
+        DisableMovement();
+
+        while ((!IsGrounded()) || (!Player1.Instance.IsGrounded())) yield return null;
+
         Player1.Instance.EnableMovement();
+        EnableMovement();
     }
-
-    private void PlayerInput_OnPlayer2Jump(object sender, System.EventArgs e)
-    {
-        if (GetComponent<Rigidbody2D>().gravityScale > 0f)
-        {
-            jumpRequest = true;
-            jumpRequestTime = Time.time;
-        }
-    }
-    private void PlayerInput_OnPlayer2ReverseJump(object sender, System.EventArgs e)
-    {
-        if (GetComponent<Rigidbody2D>().gravityScale < 0f)
-        {
-            jumpRequest = true;
-            jumpRequestTime = Time.time;
-        }
-    }
-
-    public void DisableMovement()
+    private void DisableMovement()
     {
         movementDisabled = true;
     }
-    public void EnableMovement()
+    private void EnableMovement()
     {
         movementDisabled = false;
     }
@@ -133,78 +123,39 @@ public class Player2 : MonoBehaviour
 
         if (jumpRequest)
         {
-            //Debug.Log("lastGroundedTime = " + lastGroundedTime + ", current time = " + Time.time + ", coyoteTime = " + coyoteTime);
-            if (Time.time - lastGroundedTime < coyoteTime && Time.time - lastJumpTime > coyoteTime)
+            if (TimeSince(jumpRequestTime) > jumpBufferTime)
+            {
+                jumpRequest = false;
+            }
+            else if (TimeSince(lastGroundedTime) < coyoteTime && TimeSince(lastJumpTime) > repeatedJumpForbidTime)
             {
                 // perform actual jump
                 Vector3 velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower * Mathf.Sign(GetComponent<Rigidbody2D>().gravityScale), velocity.z);
+                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, GravityNormal() ? jumpPower : -jumpPower, velocity.z);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
             }
-            else if (Time.time - jumpRequestTime > rebounceTime)
-            {
-                jumpRequest = false;
-            }
         }
 
-        if (!movementDisabled)
+        if (movementDisabled)
         {
-            float horizontalForce = horizontalForceScale * PlayerInput.Instance.GetPlayer2MovementValue();
-
-            if (fastTurning && horizontalForce == 0f)
-            {
-                fastTurning = false;
-                //Debug.Log("no input, disabling fastTurning");
-            }
-            else if (fastTurning && Mathf.Abs(turningVelocity - momentumBuilt) < NEGLIGIBLE_DIFFERENCE)
-            {
-                fastTurning = false;
-                //Debug.Log("built back momentum, disabling fastTurning");
-            }
-            else if (!fastTurning && horizontalForce * GetComponent<Rigidbody2D>().velocity.x < 0f)
-            {
-                fastTurning = true;
-                turningVelocity = GetComponent<Rigidbody2D>().velocity.x;
-                momentumBuilt = -GetComponent<Rigidbody2D>().velocity.x;
-                //Debug.Log("movement and input inverse, enabling fastTurning");
-            }
-
-            if (fastTurning)
-            {
-                turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref smoothDampVelocity, fastTurnTime);
-                GetComponent<Rigidbody2D>().velocity = new Vector2(turningVelocity, GetComponent<Rigidbody2D>().velocity.y);
-            }
-            else
-            {
-                GetComponent<ConstantForce2D>().force = new Vector2(horizontalForce, 0f);
-            }
-            //Debug.Log("velocity = " + GetComponent<Rigidbody2D>().velocity.x + ", fastTurning = " + fastTurning + ", IsGrounded = " + IsGrounded());
+            // stop abruptly to prevent high jump with gravity flips
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
         }
         else
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
-            GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
+            // actual velocity set here, simply, instantly, without accelerating and decelerating
+            GetComponent<Rigidbody2D>().velocity = new Vector2(
+                maximumSpeed * PlayerInput.Instance.GetPlayer2MovementValue(),
+                GetComponent<Rigidbody2D>().velocity.y);
         }
     }
 
-    private bool IsGrounded()
+    public bool IsGrounded()
     {
-
-        int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
-        Vector2 leftRayOrigin = new Vector2(transform.position.x - capsuleWidth / 2, transform.position.y);
-        Vector2 rightRayOrigin = new Vector2(transform.position.x + capsuleWidth / 2, transform.position.y);
-        Vector2 centerRayOrigin = new Vector2(transform.position.x, transform.position.y);
-
-        bool normalGravity = GetComponent<Rigidbody2D>().gravityScale > 0f;
-
-        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
-        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
-        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
-
-        return leftRayHit || rightRayHit || centerRayHit;
+        CapsuleCollider2D cc = GetComponent<CapsuleCollider2D>();
+        return Physics2D.CapsuleCast(transform.position, cc.size, cc.direction, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
