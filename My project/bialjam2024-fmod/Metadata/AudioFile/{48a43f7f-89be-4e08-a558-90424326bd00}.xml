@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{48a43f7f-89be-4e08-a558-90424326bd00}">
+		<property name="assetPath">
+			<value>burn.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>3.1121666666666665</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94aae1d6-301f-47fd-a706-1afb5150be52}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{5047a62b-45c9-4c58-84cf-90ce6592fa2b}">
+		<property name="assetPath">
+			<value>bobr edit.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.9597916666666668</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{94aae1d6-301f-47fd-a706-1afb5150be52}</destination>
+		</relationship>
+	</object>
+</objects>
