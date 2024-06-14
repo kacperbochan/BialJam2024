@@ -72417,7 +72417,6 @@ GameObject:
   - component: {fileID: 349878165444518978}
   - component: {fileID: 3989683463513167796}
   - component: {fileID: 8737757860721694123}
-  - component: {fileID: 8737757860721694122}
   - component: {fileID: 7395751875900942588}
   - component: {fileID: 1720843759033148004}
   m_Layer: 7
@@ -72807,7 +72806,8 @@ MonoBehaviour:
   fastTurnTime: 0.1
   maximumSpeed: 8
   burnSpeed: 7.8
-  jumpPower: 16
+  slopeCompensation: 0.8
+  jumpPower: 18
   coyoteTime: 0.05
   repeatedJumpForbidTime: 0.05
   jumpBufferTime: 0.2
@@ -73059,8 +73059,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumSpeed: 6
-  jumpPower: 14
-  coyoteTime: 0.05
+  jumpPower: 12
+  coyoteTime: 0.1
   repeatedJumpForbidTime: 0.05
   jumpBufferTime: 0.2
 --- !u!4 &7030750510424397619
@@ -73161,8 +73161,8 @@ Transform:
   - {fileID: 1758598644711514041}
   m_Father: {fileID: 349878165444518978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &8737757860721694122
-CapsuleCollider2D:
+--- !u!61 &8737757860721694123
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -73171,41 +73171,6 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 6200000, guid: 525d61c18c1fd8643b5209e7eb49469d, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.6, y: 1.19}
-  m_Direction: 0
---- !u!61 &8737757860721694123
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046000270783432992}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -73239,8 +73204,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.62, y: 1.16}
-  m_EdgeRadius: 0
+  m_Size: {x: 0.44, y: 1.04}
+  m_EdgeRadius: 0.08
 --- !u!114 &8908780927875542546
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public class Player1 : MonoBehaviour
     [SerializeField] private float fastTurnTime; 
     [SerializeField] private float maximumSpeed;
     [SerializeField] private float burnSpeed;
+    [SerializeField] private float slopeCompensation;
 
     [SerializeField] private float jumpPower;
     [SerializeField] private float coyoteTime;
@@ -160,6 +161,10 @@ public class Player1 : MonoBehaviour
             }
             GetComponent<Rigidbody2D>().velocity = new Vector2(currentSpeed, GetComponent<Rigidbody2D>().velocity.y);
 
+            // slope handling
+            float gravity = GetComponent<Rigidbody2D>().gravityScale * GetComponent<Rigidbody2D>().mass;
+            GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x - GetSlope() * gravity / 2f * slopeCompensation, GetComponent<Rigidbody2D>().velocity.y);
+
             if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > burnSpeed) FireOn();
             else FireOff();
         }
@@ -167,8 +172,15 @@ public class Player1 : MonoBehaviour
 
     public bool IsGrounded()
     {
-        CapsuleCollider2D cc = GetComponent<CapsuleCollider2D>();
-        return Physics2D.CapsuleCast(transform.position, cc.size, cc.direction, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
+        BoxCollider2D bc = GetComponent<BoxCollider2D>();
+        return Physics2D.BoxCast(transform.position, bc.size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
+    }
+    public float GetSlope()
+    {
+        BoxCollider2D bc = GetComponent<BoxCollider2D>();
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
+        if (hit) return hit.normal.x;
+        else return 0f;
     }
 
     private void FireOff()
