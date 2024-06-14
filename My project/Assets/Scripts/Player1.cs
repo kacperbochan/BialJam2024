@@ -28,7 +28,7 @@ public class Player1 : MonoBehaviour
     [SerializeField] private float jumpBufferTime;
 
     [SerializeField] private float burnTime;
-    [SerializeField] private float airBurnForbidTime;
+    //[SerializeField] private float airBurnForbidTime = 0.5f;
 
     private float targetSpeed;
     private bool fastTurning = false;
@@ -42,7 +42,7 @@ public class Player1 : MonoBehaviour
     private float lastGroundedTime;
 
     private float lastAirTime = 0f;
-    private float lastFireOnTime = Mathf.NegativeInfinity;
+    private float lastBurningTime = Mathf.NegativeInfinity;
     private readonly List<Removable> touching = new();
     
     private bool movementDisabled = false;
@@ -56,6 +56,7 @@ public class Player1 : MonoBehaviour
     public event EventHandler OnPlayer1BurnOn;
     public event EventHandler OnPlayer1BurnOff;
 
+    // DO NOT modify Rigidbody2D's velocity.x directly! use Speed instead. modifying y is fine though
     private float _speed;
     private float Speed
     {
@@ -129,6 +130,7 @@ public class Player1 : MonoBehaviour
                 lastJumpTime = Time.time;
                 jumpRequest = false;
                 OnPlayer1Jump?.Invoke(this, EventArgs.Empty); //for visuals
+                BurnBelow();
             }
         }
 
@@ -179,37 +181,37 @@ public class Player1 : MonoBehaviour
             // slope handling
             float gravity = GetComponent<Rigidbody2D>().gravityScale * GetComponent<Rigidbody2D>().mass;
             Speed = Speed - GetSlope() * gravity * slopeCompensation;
-
+            
             // are we burning
-            if (Mathf.Abs(Speed) > burnSpeed) FireOn();
-            else FireOff();
+            HandleFire(Mathf.Abs(Speed) > burnSpeed);
         }
     }
 
     public bool IsGrounded()
     {
-        BoxCollider2D bc = GetComponent<BoxCollider2D>();
-        return Physics2D.BoxCast(transform.position, bc.size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
+        return Physics2D.BoxCast(transform.position, GetComponent<BoxCollider2D>().size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
     }
     public float GetSlope()
     {
-        BoxCollider2D bc = GetComponent<BoxCollider2D>();
-        RaycastHit2D hit = Physics2D.BoxCast(transform.position, bc.size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
+        RaycastHit2D hit = Physics2D.BoxCast(transform.position, GetComponent<BoxCollider2D>().size, 0f, GravityNormal() ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, 1 << WORLD_PLATFORM_LAYER);
         if (hit) return hit.normal.x;
         else return 0f;
     }
 
-    private void FireOff()
+    private bool isBurning = false;
+    private void HandleFire(bool isOn) // triggered every frame in Update
     {
-        OnPlayer1BurnOff?.Invoke(this, EventArgs.Empty);
-    }
-    private void FireOn()
-    {
-        OnPlayer1BurnOn?.Invoke(this, EventArgs.Empty);
-        lastFireOnTime = Time.time;
+        if (isBurning != isOn)
+        {
+            isBurning = isOn;
+            if (isBurning) OnPlayer1BurnOn?.Invoke(this, EventArgs.Empty);
+            else OnPlayer1BurnOff?.Invoke(this, EventArgs.Empty);
+        }
 
-        if (!IsGrounded() || (IsGrounded() && (TimeSince(lastAirTime) > airBurnForbidTime))) 
-        { 
+        if (isBurning) lastBurningTime = Time.time;
+
+        if ((TimeSince(lastBurningTime) < burnTime)   )//   && (!IsGrounded() || (TimeSince(lastAirTime) > airBurnForbidTime)))
+        {
             while (touching.Count > 0) //foreach doesn't work for removing list elements
             {
                 touching[0].Burn();
@@ -222,8 +224,7 @@ public class Player1 : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Removable>(out var removable))
         {
-            if (TimeSince(lastFireOnTime) < burnTime && (!IsGrounded() || TimeSince(lastAirTime) > airBurnForbidTime)) removable.Burn();
-            else touching.Add(removable);
+            touching.Add(removable);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -231,6 +232,19 @@ public class Player1 : MonoBehaviour
         if (collision.gameObject.TryGetComponent<Removable>(out var removable) && touching.Contains(removable))
         {
             touching.Remove(removable);
+        }
+    }
+
+    private void BurnBelow()
+    {
+        // this is executed at jump, to make sure we can't continuously bounce off burnable ground when we're burning, even though colliders might not get in contact
+        if (isBurning)
+        {
+            RaycastHit2D cast = Physics2D.BoxCast(transform.position, GetComponent<BoxCollider2D>().size, 0f, GravityNormal() ? Vector2.down : Vector2.up, Mathf.Infinity, 1 << WORLD_PLATFORM_LAYER);
+            if (cast && cast.collider.gameObject.TryGetComponent(out Removable removable))
+            {
+                removable.Burn();
+            }
         }
     }
 }
