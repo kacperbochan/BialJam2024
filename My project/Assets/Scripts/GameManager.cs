@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    [SerializeField] private PauseCanvas pauseCanvas;
+    [SerializeField] private PauseUI pauseCanvas;
 
     private enum GameState
     {

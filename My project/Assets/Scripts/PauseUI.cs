@@ -2,11 +2,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseCanvas : MonoBehaviour
+public class PauseUI : MonoBehaviour
 {
     [SerializeField] private Button ResumeButton;
     [SerializeField] private Button MenuButton;
     [SerializeField] private Button QuitButton;
+    [SerializeField] private ConfirmUI confirmUI;
 
     private void Start()
     {
@@ -16,7 +17,12 @@ public class PauseCanvas : MonoBehaviour
         });
         MenuButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene("MenuScene");
+            Hide();
+            confirmUI.Show(() => {
+                SceneManager.LoadScene("MenuScene");
+            }, () => {
+                Show();
+            });
         });
         
         if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -27,8 +33,13 @@ public class PauseCanvas : MonoBehaviour
         {
             QuitButton.onClick.AddListener(() =>
             {
-                Debug.Log("quitting");
-                Application.Quit();
+                Hide();
+                confirmUI.Show(() => {
+                    Debug.Log("quitting");
+                    Application.Quit();
+                }, () => {
+                    Show();
+                });
             });
         }
     }
