@@ -1070,7 +1070,7 @@ GameObject:
   - component: {fileID: 246128297}
   - component: {fileID: 246128298}
   m_Layer: 6
-  m_Name: Letterbox and fog
+  m_Name: LetterboxAndFog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2741,6 +2741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!1 &412502321
 GameObject:
   m_ObjectHideFlags: 0
@@ -23889,6 +23890,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!4 &884564564 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2437407095468335263, guid: b1b573d21f8fc6c428c9385ee92f19a9, type: 3}
@@ -26863,6 +26865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!1001 &1171212346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27528,6 +27531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!1001 &1211359042
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29936,6 +29940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!1 &1501510943
 GameObject:
   m_ObjectHideFlags: 0
@@ -49811,6 +49816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 198c9b8150451694f8bf36b5cd78d3c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castorEventCooldown: 5
 --- !u!1001 &1879657358
 PrefabInstance:
   m_ObjectHideFlags: 0
