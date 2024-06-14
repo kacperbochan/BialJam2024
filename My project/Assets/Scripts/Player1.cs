@@ -1,42 +1,10 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player1 : MonoBehaviour
 {
     public static Player1 Instance { get; private set; }
-
-    [SerializeField] private float jumpPower = 1f;
-    [SerializeField] private float horizontalForceScale = 1f;
-    [SerializeField] private float fastTurnTime = 0.1f;
-    [SerializeField] private float distanceToGround = 0.1f;
-    [SerializeField] private float mediumSpeed = 6f;
-    [SerializeField] private float highSpeed = 12f;
-    //[SerializeField] private SpriteRenderer spriteRenderer;
-    //[SerializeField] private Color lowSpeedColor = Color.white;
-    //[SerializeField] private Color mediumSpeedColor = new(1f, 1f, .5f);
-    //[SerializeField] private Color highSpeedColor = new(1f, .8f, 0f);
-    [SerializeField] private float rebounceTime = .2f;
-    [SerializeField] private float coyoteTime = .05f;
-    [SerializeField] private float burnTime = .05f;
-    [SerializeField] private float airBurnForbidTime = .5f;
-    private bool fastTurning = false;
-    private float momentumBuilt = 0f;
-    private float turningVelocity;
-    private float smoothDampVelocity;
-    private const float NEGLIGIBLE_DIFFERENCE = 0.01f;
-    private const int WORLD_PLATFORM_LAYER = 8;
-    private bool jumpRequest = false;
-    private float jumpRequestTime;
-    private float lastJumpTime = 0f;
-    private float lastGroundedTime;
-    private float lastBurnTime = Mathf.NegativeInfinity;
-    private float lastAirTime = 0f;
-    private float capsuleWidth;
-    private readonly List<Removable> touching = new();
-    public event EventHandler OnPlayer1Jump;
-    private bool movementDisabled = false;
-
     private void Awake()
     {
         Instance = this;
@@ -46,18 +14,54 @@ public class Player1 : MonoBehaviour
         Instance = this;
     }
 
+    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private float deceleration = 1f;
+    [SerializeField] private float maximumSpeed = 5f;
+    [SerializeField] private float burnSpeed = 12f;
+
+    [SerializeField] private float jumpPower = 1f;
+    [SerializeField] private float fastTurnTime = 0.1f;
+
+    [SerializeField] private float coyoteTime = .05f;
+    [SerializeField] private float repeatedJumpForbidTime = .05f;
+    [SerializeField] private float jumpBufferTime = .05f;
+    [SerializeField] private float burnTime = .05f;
+    [SerializeField] private float airBurnForbidTime = .5f;
+
+    private float targetSpeed;
+    private bool fastTurning = false;
+    private float momentumBuilt = 0f;
+    private float turningVelocity;
+    private float fastTurningSmoothDampVelocity;
+
+    private bool jumpRequest = false;
+    private float jumpRequestTime;
+    private float lastJumpTime = 0f;
+    private float lastGroundedTime;
+
+    private float lastAirTime = 0f;
+    private float lastFireOnTime = Mathf.NegativeInfinity;
+    private readonly List<Removable> touching = new();
+    
+    private bool movementDisabled = false;
+
+    private const float DISTANCE_TO_GROUND = 0.9f;
+    private const float NEGLIGIBLE_DIFFERENCE = 0.01f;
+    private const int WORLD_PLATFORM_LAYER = 8;
+
+    // events for visuals
+    public event EventHandler OnPlayer1Jump;
+    public event EventHandler OnPlayer1BurnOn;
+    public event EventHandler OnPlayer1BurnOff;
+
     private void Start()
     {
         PlayerInput.Instance.OnPlayer1Jump += PlayerInput_OnPlayer1Jump;
         PlayerInput.Instance.OnPlayer1ReverseJump += PlayerInput_OnPlayer1ReverseJump;
-
-        CapsuleCollider2D capsuleCollider = GetComponent<CapsuleCollider2D>();
-        capsuleWidth = capsuleCollider.size.x;
     }
-
     private void PlayerInput_OnPlayer1Jump(object sender, System.EventArgs e)
     {
-        if (GetComponent<Rigidbody2D>().gravityScale > 0f)
+        if (GravityNormal())
         {
             jumpRequest = true;
             jumpRequestTime = Time.time;
@@ -65,7 +69,7 @@ public class Player1 : MonoBehaviour
     }
     private void PlayerInput_OnPlayer1ReverseJump(object sender, System.EventArgs e)
     {
-        if (GetComponent<Rigidbody2D>().gravityScale < 0f)
+        if (!GravityNormal())
         {
             jumpRequest = true;
             jumpRequestTime = Time.time;
@@ -81,6 +85,15 @@ public class Player1 : MonoBehaviour
         movementDisabled = false;
     }
 
+    private bool GravityNormal()
+    {
+        return GetComponent<Rigidbody2D>().gravityScale > 0f;
+    }
+    private float TimeSince(float timePoint)
+    {
+        return Time.time - timePoint;
+    }
+
     private void Update()
     {
         if (IsGrounded()) lastGroundedTime = Time.time;
@@ -88,135 +101,115 @@ public class Player1 : MonoBehaviour
 
         if (jumpRequest)
         {
-            //Debug.Log("lastGroundedTime = " + lastGroundedTime + ", current time = " + Time.time + ", coyoteTime = " + coyoteTime);
-            if (Time.time - lastGroundedTime < coyoteTime && Time.time - lastJumpTime > coyoteTime)
+            if (TimeSince(jumpRequestTime) > jumpBufferTime)
+            {
+                jumpRequest = false;
+            }
+            else if (TimeSince(lastGroundedTime) < coyoteTime && TimeSince(lastJumpTime) > repeatedJumpForbidTime)
             {
                 // perform actual jump
                 Vector3 velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, jumpPower * Mathf.Sign(GetComponent<Rigidbody2D>().gravityScale), velocity.z);
+                GetComponent<Rigidbody2D>().velocity = new Vector3(velocity.x, GravityNormal() ? jumpPower : -jumpPower, velocity.z);
                 lastJumpTime = Time.time;
                 jumpRequest = false;
-                OnPlayer1Jump?.Invoke(this, EventArgs.Empty);
-            }
-            else if (Time.time - jumpRequestTime > rebounceTime)
-            {
-                jumpRequest = false;
+                OnPlayer1Jump?.Invoke(this, EventArgs.Empty); //for visuals
             }
         }
 
-        if (!movementDisabled)
+        if (movementDisabled)
         {
-            float horizontalForce = horizontalForceScale * PlayerInput.Instance.GetPlayer1MovementValue();
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
+        }
+        else
+        {
+            targetSpeed = maximumSpeed * PlayerInput.Instance.GetPlayer1MovementValue();
 
-            if (fastTurning && horizontalForce == 0f)
+            if (fastTurning && targetSpeed == 0f)
             {
-                fastTurning = false;
-                //Debug.Log("no input, disabling fastTurning");
+                fastTurning = false; //cancelled fast turning
             }
             else if (fastTurning && Mathf.Abs(turningVelocity - momentumBuilt) < NEGLIGIBLE_DIFFERENCE)
             {
-                fastTurning = false;
-                //Debug.Log("built back momentum, disabling fastTurning");
+                fastTurning = false; //completed fast turning
             }
-            else if (!fastTurning && horizontalForce * GetComponent<Rigidbody2D>().velocity.x < 0f)
+            else if (!fastTurning && targetSpeed * GetComponent<Rigidbody2D>().velocity.x < 0f)
             {
-                fastTurning = true;
+                fastTurning = true; //start fast turning
                 turningVelocity = GetComponent<Rigidbody2D>().velocity.x;
                 momentumBuilt = -GetComponent<Rigidbody2D>().velocity.x;
-                //Debug.Log("movement and input inverse, enabling fastTurning");
             }
 
             if (fastTurning)
             {
-                turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref smoothDampVelocity, fastTurnTime);
+                turningVelocity = Mathf.SmoothDamp(turningVelocity, momentumBuilt, ref fastTurningSmoothDampVelocity, fastTurnTime);
                 GetComponent<Rigidbody2D>().velocity = new Vector2(turningVelocity, GetComponent<Rigidbody2D>().velocity.y);
-                if (Mathf.Abs(momentumBuilt) > highSpeed) FireHigh();
-                else if (Mathf.Abs(momentumBuilt) > mediumSpeed) FireMedium();
-                else FireLow();
             }
-            else
+
+            // actual acceleration and deceleration
+            float currentSpeed = GetComponent<Rigidbody2D>().velocity.x;
+            if (currentSpeed < targetSpeed)
             {
-                GetComponent<ConstantForce2D>().force = new Vector2(horizontalForce, 0f);
-                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > highSpeed) FireHigh();
-                else if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > mediumSpeed) FireMedium();
-                else FireLow();
+                float maxAcceleration = acceleration * Time.deltaTime;
+                currentSpeed = Mathf.Min(targetSpeed, currentSpeed + maxAcceleration);
             }
-            //Debug.Log("velocity = " + GetComponent<Rigidbody2D>().velocity.x + ", fastTurning = " + fastTurning + ", IsGrounded = " + IsGrounded());
-        }
-        else
-        {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0f, GetComponent<Rigidbody2D>().velocity.y);
-            GetComponent<ConstantForce2D>().force = new Vector2(0f, 0f);
+            else if (currentSpeed > targetSpeed)
+            {
+                float maxDeceleration = deceleration * Time.deltaTime;
+                currentSpeed = Mathf.Max(targetSpeed, currentSpeed - maxDeceleration);
+            }
+            GetComponent<Rigidbody2D>().velocity = new Vector2(currentSpeed, GetComponent<Rigidbody2D>().velocity.y);
+
+            if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > burnSpeed) FireOn();
+            else FireOff();
         }
     }
-
-
 
     public bool IsGrounded()
     {
         int worldPlatformLayer = 1 << WORLD_PLATFORM_LAYER;
-        Vector2 leftRayOrigin = new Vector2(transform.position.x - capsuleWidth / 2, transform.position.y);
-        Vector2 rightRayOrigin = new Vector2(transform.position.x + capsuleWidth / 2, transform.position.y);
-        Vector2 centerRayOrigin = new Vector2(transform.position.x, transform.position.y);
+        Vector2 leftRayOrigin = new(transform.position.x - GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
+        Vector2 rightRayOrigin = new(transform.position.x + GetComponent<CapsuleCollider2D>().size.x / 2, transform.position.y);
+        Vector2 centerRayOrigin = new(transform.position.x, transform.position.y);
 
         bool normalGravity = GetComponent<Rigidbody2D>().gravityScale > 0f;
 
-        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
-        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
-        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, distanceToGround, worldPlatformLayer);
+        bool leftRayHit = Physics2D.Raycast(leftRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
+        bool rightRayHit = Physics2D.Raycast(rightRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
+        bool centerRayHit = Physics2D.Raycast(centerRayOrigin, normalGravity ? Vector2.down : Vector2.up, DISTANCE_TO_GROUND, worldPlatformLayer);
 
         return leftRayHit || rightRayHit || centerRayHit;
     }
 
-    private void FireLow()
+    private void FireOff()
     {
-        //Debug.Log("player 1 low speed");
-        //spriteRenderer.color = lowSpeedColor;
-        GetComponentInChildren<Player1Visual>().FireOff();
+        OnPlayer1BurnOff?.Invoke(this, EventArgs.Empty);
     }
-    private void FireMedium()
+    private void FireOn()
     {
-        //Debug.Log("player 1 medium speed");
-        //spriteRenderer.color = mediumSpeedColor;
-        GetComponentInChildren<Player1Visual>().FireOff();
-    }
-    private void FireHigh()
-    {
-        //Debug.Log("player 1 high speed");
-        //spriteRenderer.color = highSpeedColor;
-        GetComponentInChildren<Player1Visual>().FireOn();
-        lastBurnTime = Time.time;
+        OnPlayer1BurnOn?.Invoke(this, EventArgs.Empty);
+        lastFireOnTime = Time.time;
 
-        if (!IsGrounded() || (IsGrounded() && (Time.time - lastAirTime > airBurnForbidTime))) 
+        if (!IsGrounded() || (IsGrounded() && (TimeSince(lastAirTime) > airBurnForbidTime))) 
         { 
-            while (touching.Count > 0)
+            while (touching.Count > 0) //foreach doesn't work for removing list elements
             {
                 touching[0].Burn();
-                touching.RemoveAt(0); //removes the element from list, that's why there's no foreach, we shouldn't iterate over list with foreach while removing its elements
+                touching.RemoveAt(0);
             }
-            /*
-            foreach (Removable removable in touching)
-            {
-                removable.Burn();
-            }
-            */
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Removable removable = collision.gameObject.GetComponent<Removable>();
-        if (removable != null)
+        if (collision.gameObject.TryGetComponent<Removable>(out var removable))
         {
-            //Debug.Log("collided with removable, time = " + Time.time + ", lastBurnTime = " + lastBurnTime + ", " + (Time.time - lastBurnTime < burnTime));
-            if (Time.time - lastBurnTime < burnTime && (!IsGrounded() || Time.time - lastAirTime > airBurnForbidTime)) removable.Burn();
+            if (TimeSince(lastFireOnTime) < burnTime && (!IsGrounded() || TimeSince(lastAirTime) > airBurnForbidTime)) removable.Burn();
             else touching.Add(removable);
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Removable removable = collision.gameObject.GetComponent<Removable>();
-        if (removable != null && touching.Contains(removable))
+        if (collision.gameObject.TryGetComponent<Removable>(out var removable) && touching.Contains(removable))
         {
             touching.Remove(removable);
         }
